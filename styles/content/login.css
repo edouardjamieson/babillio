@@ -1,0 +1,166 @@
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+.login-container .login-formbox {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  height: 100%;
+  width: 55%;
+  display: flex;
+}
+.login-container .login-formbox .login-formbox_form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 80%;
+}
+.login-container .login-formbox .login-formbox_form h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-white);
+}
+.login-container .login-formbox .login-formbox_form p {
+  color: var(--color-lightgray);
+  width: 80%;
+  margin-bottom: 2rem;
+}
+.login-container .login-formbox .login-googlebtn {
+  background-color: var(--color-white);
+  cursor: pointer;
+  transition: all ease 0.2s;
+  border-radius: 100px;
+  border: none;
+  padding: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.login-container .login-formbox .login-googlebtn span {
+  color: var(--color-gray);
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  transition: all ease 0.2s;
+  font-weight: var(--fw-regular);
+}
+.login-container .login-formbox .login-googlebtn .google-logo {
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png);
+  width: 1.5rem;
+  height: 1.5rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 1rem;
+}
+.login-container .login-formbox .login-googlebtn:hover {
+  box-shadow: 0 0 0 5px var(--color-primary-faded);
+}
+.login-container .login-formbox .login-googlebtn:hover span {
+  color: var(--color-primary);
+}
+.login-container .login-formbox .login-separator {
+  width: 100%;
+  text-align: center;
+  font-weight: var(--fw-bold);
+  margin: 1rem 0;
+}
+.login-container .login-formbox .login-input_container {
+  background-color: var(--color-black20);
+  padding: 0.8rem 1rem;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.login-container .login-formbox .login-input_container i {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+.login-container .login-formbox .login-input_container .login-input {
+  border: none;
+  width: 100%;
+  font-size: 1.2rem;
+  background-color: transparent;
+  color: var(--color-white);
+}
+.login-container .login-formbox .login-input_container .login-input::placeholder {
+  color: var(--color-lightgray);
+}
+.login-container .login-formbox .login-input_container .login-label {
+  transition: all ease 0.2s;
+  opacity: 0;
+  left: 5rem;
+  pointer-events: none;
+  position: absolute;
+}
+.login-container .login-formbox .login-input_container .login-input:placeholder-shown + .login-label {
+  left: 3.2rem;
+  opacity: 1;
+  transition: all ease 0.2s;
+  pointer-events: none;
+  position: absolute;
+}
+.login-container .login-formbox .cta {
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+.login-container .login-formbox .login-links {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+.login-container .login-formbox .login-links a {
+  color: var(--color-lightgray);
+  font-size: 0.8rem;
+  text-decoration: none;
+  align-self: flex-start;
+}
+.login-container .login-formbox .login-links a:hover {
+  text-decoration: underline;
+}
+.login-container .login-formbox .login-warning {
+  font-size: 0.8rem;
+  margin-bottom: 0!important;
+  margin-top: 2rem;
+}
+.login-container .login-formbox .login-warning a {
+  text-decoration: none;
+  color: var(--color-white);
+}
+.login-container .login-sidebox {
+  width: 45%;
+  height: 100%;
+  background-position: bottom center;
+  background-size: 90% auto;
+  background-repeat: no-repeat;
+}
+.login-container .login-sidebox.login {
+  background-image: url(../public/images/login_image.svg);
+}
+.login-container .login-sidebox.register {
+  background-image: url(../public/images/register_image.svg);
+}
+.login-container .login-sidebox .login-logo {
+  width: 3rem;
+  height: 3rem;
+  background-size: contain;
+  display: block;
+  background-image: url(../public/images/logo_blue.png);
+  position: absolute;
+  background-repeat: no-repeat;
+  top: 1rem;
+  left: 1rem;
+}
+.login-container .login-sidebox .login-errors {
+  width: calc(100% - 2rem);
+  font-size: 0.8rem;
+  background-color: var(--color-error);
+  color: var(--color-pale);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}
