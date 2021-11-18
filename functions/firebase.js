@@ -15,8 +15,9 @@ const app = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : fir
 
 // Initialize Firebase modules
 const db = app.firestore()
-const auth = app.auth()
 const fields = firebase.firestore.FieldValue
+const auth = app.auth()
 const google = new firebase.auth.GoogleAuthProvider()
+const storage = app.storage()
 // Export modules
-export { db, auth, google,fields }
+export { db, auth, google, fields, storage }

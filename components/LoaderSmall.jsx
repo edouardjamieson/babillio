@@ -1,6 +1,6 @@
-export default function Loader() {
+export default function LoaderSmall() {
     return (
-        <div className="large-loader">
+        <div className="small-loader">
             <img src="/images/loading.svg" alt="loading..." />
         </div>
     )

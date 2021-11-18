@@ -36,4 +36,9 @@ function getDayName(string) {
     }
 }
 
-export { validateEmail, validateEmpty, validatePassword, getDayName }
+function generateUniqueID() {
+    const id = Math.floor((Math.random() * 500) * Date.now())
+    return id
+}
+
+export { validateEmail, validateEmpty, validatePassword, getDayName, generateUniqueID }

@@ -56,7 +56,7 @@ export default function Layout({ children, pageTitle, navigationVisible, current
             <Head>
                 <title>Babillio - {pageTitle}</title>
                 <meta name="description" content="Babillio - L'application pour les enseignants et éléves qui révolutionne les cours." />
-                <link rel="icon" href="/images/logo_blue.svg"/>
+                <link rel="icon" href="/images/logo_blue.png"/>
             </Head>
 
             { isLoading !== true && currentUser !== null ?

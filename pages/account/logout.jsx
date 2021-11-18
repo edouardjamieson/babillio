@@ -11,6 +11,8 @@ export default function logout() {
     useEffect(() => {
         auth.signOut()
         .then(() => {
+            window.localStorage.removeItem('babillio_current_course_id')
+            window.localStorage.removeItem('babillio_current_group_name')
             router.push('/account/login')
         })
     }, [])

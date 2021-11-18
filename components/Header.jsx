@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 
+import { HiOutlineDocumentText, HiOutlineUsers, HiOutlineBeaker, HiOutlineChat, HiOutlineSearch, HiOutlineCurrencyDollar, HiOutlinePencil, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi'
+
 export default function Header({ navigationVisible, currentPage, isLoading, user }) {
 
     const actionsMenu = useRef()
@@ -50,7 +52,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                     <li>
                         <Link href="/documents">
                             <a className={currentPage === 'documents' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <i className="icon-file"></i>
+                                <HiOutlineDocumentText />
                                 <span>Documents</span>
                                 <span className="label">Documents</span>
                             </a>
@@ -60,7 +62,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                     <li>
                         <Link href="/students">
                             <a className={currentPage === 'students' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <i className="icon-users"></i>
+                                <HiOutlineUsers />
                                 <span>Élèves</span>
                                 <span className="label">Élèves</span>
                             </a>
@@ -69,7 +71,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                     <li>
                         <Link href="/homework">
                             <a className={currentPage === 'homework' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <i className="icon-work"></i>
+                                <HiOutlineBeaker />
                                 <span>Travaux</span>
                                 <span className="label">Travaux</span>
                             </a>
@@ -78,7 +80,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                     <li>
                         <Link href="/inbox">
                             <a className={currentPage === 'inbox' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <i className="icon-message"></i>
+                                <HiOutlineChat />
                                 <span>Messages</span>
                                 <span className="label">Messages</span>
                             </a>
@@ -91,7 +93,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                 { navigationVisible ?
                 <ul className="main-header_actions">
                     <button className="main-header_search-button">
-                        <i className="icon-search"></i>
+                        <HiOutlineSearch />
                     </button>
                     <button ref={actionsMenuTrigger} className="main-header_profile-button" style={{ backgroundImage: `url(${user.data().profile_picture})` }}></button>
                 </ul> : null }
@@ -106,25 +108,25 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                 </Link>
                 <Link href="/account/payments">
                     <a className="main-header_action-item">
-                        <i className="icon-payments"></i>
+                        <HiOutlineCurrencyDollar />
                         <span>Paiements</span>
                     </a>
                 </Link>
                 <Link href="/account/edit">
                     <a className="main-header_action-item">
-                        <i className="icon-pen"></i>
-                        <span>Modifier de le profil</span>
+                        <HiOutlinePencil />
+                        <span>Modifier le profil</span>
                     </a>
                 </Link>
                 <Link href="/settings">
                     <a className="main-header_action-item">
-                        <i className="icon-settings"></i>
+                        <HiOutlineCog />
                         <span>Paramètres</span>
                     </a>
                 </Link>
                 <Link href="/account/logout">
                     <a className="main-header_action-item">
-                        <i className="icon-error"></i>
+                        <HiOutlineLogout />
                         <span>Déconnexion</span>
                     </a>
                 </Link>

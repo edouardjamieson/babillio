@@ -1,5 +1,6 @@
-import { db, fields } from './firebase'
+import { db, fields, storage } from './firebase'
 import { getLoggedUser } from './user.db'
+import { generateUniqueID } from './utils'
 /***
  *     ######   ######## ########     ######  ##     ## ########  ########  ######## ##    ## ########     ######   #######  ##     ## ########   ######  ######## 
  *    ##    ##  ##          ##       ##    ## ##     ## ##     ## ##     ## ##       ###   ##    ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##       
@@ -118,4 +119,132 @@ async function addGroupToCourse(course_id, group_data) {
 
 }
 
-export { getCurrentCourse, setCurrentGroup, addCourse, getCourseInfos, addGroupToCourse }
+/***
+ *       ###    ########  ########      ######   #######  ##     ## ########   ######  ########    ######## #### ##       ########  ######  
+ *      ## ##   ##     ## ##     ##    ##    ## ##     ## ##     ## ##     ## ##    ## ##          ##        ##  ##       ##       ##    ## 
+ *     ##   ##  ##     ## ##     ##    ##       ##     ## ##     ## ##     ## ##       ##          ##        ##  ##       ##       ##       
+ *    ##     ## ##     ## ##     ##    ##       ##     ## ##     ## ########   ######  ######      ######    ##  ##       ######    ######  
+ *    ######### ##     ## ##     ##    ##       ##     ## ##     ## ##   ##         ## ##          ##        ##  ##       ##             ## 
+ *    ##     ## ##     ## ##     ##    ##    ## ##     ## ##     ## ##    ##  ##    ## ##          ##        ##  ##       ##       ##    ## 
+ *    ##     ## ########  ########      ######   #######   #######  ##     ##  ######  ########    ##       #### ######## ########  ######  
+ */
+async function addCourseFiles(course_id, user_id, file, group_name) {
+
+    let type = file.name.split('.')
+    type = type[type.length-1].toLowerCase()
+
+    const uuid = generateUniqueID()
+    const path = `/content/documents/${uuid}.${type}`
+
+    //upload query
+    const storage_query = await storage.ref(path).put(file)
+    const url = await storage_query.ref.getDownloadURL()
+
+    const new_file = {
+        url: url,
+        created_at: Date.now(),
+        groups:[group_name],
+        uploaded_by: user_id,
+        path: path,
+        name: `${uuid}.${type}`,
+        original_name: file.name
+    }
+
+    //course query
+    const course_query = await db.collection('courses').doc(course_id).collection('documents').add(new_file)
+
+    return {id: course_query.id, data: new_file}
+
+}
+
+/***
+ *     ######   ######## ########     ######   #######  ##     ## ########   ######  ########    ######## #### ##       ########  ######  
+ *    ##    ##  ##          ##       ##    ## ##     ## ##     ## ##     ## ##    ## ##          ##        ##  ##       ##       ##    ## 
+ *    ##        ##          ##       ##       ##     ## ##     ## ##     ## ##       ##          ##        ##  ##       ##       ##       
+ *    ##   #### ######      ##       ##       ##     ## ##     ## ########   ######  ######      ######    ##  ##       ######    ######  
+ *    ##    ##  ##          ##       ##       ##     ## ##     ## ##   ##         ## ##          ##        ##  ##       ##             ## 
+ *    ##    ##  ##          ##       ##    ## ##     ## ##     ## ##    ##  ##    ## ##          ##        ##  ##       ##       ##    ## 
+ *     ######   ########    ##        ######   #######   #######  ##     ##  ######  ########    ##       #### ######## ########  ######  
+ */
+async function getCourseFiles(course_id) {
+    const course_query = await db.collection('courses').doc(course_id).collection('documents').get()
+    return course_query.docs
+}
+
+/***
+ *       ###    ########  ########      ######   ########   #######  ##     ## ########     ########  #######     ######## #### ##       ######## 
+ *      ## ##   ##     ## ##     ##    ##    ##  ##     ## ##     ## ##     ## ##     ##       ##    ##     ##    ##        ##  ##       ##       
+ *     ##   ##  ##     ## ##     ##    ##        ##     ## ##     ## ##     ## ##     ##       ##    ##     ##    ##        ##  ##       ##       
+ *    ##     ## ##     ## ##     ##    ##   #### ########  ##     ## ##     ## ########        ##    ##     ##    ######    ##  ##       ######   
+ *    ######### ##     ## ##     ##    ##    ##  ##   ##   ##     ## ##     ## ##              ##    ##     ##    ##        ##  ##       ##       
+ *    ##     ## ##     ## ##     ##    ##    ##  ##    ##  ##     ## ##     ## ##              ##    ##     ##    ##        ##  ##       ##       
+ *    ##     ## ########  ########      ######   ##     ##  #######   #######  ##              ##     #######     ##       #### ######## ######## 
+ */
+async function courseFileAddGroup(course_id, group_name, file) {
+
+    const course_query = await db.collection('courses').doc(course_id).collection('documents').doc(file.id).update({
+        groups: fields.arrayUnion(group_name)
+    })
+
+    // const file_query = await db.collection('courses')
+
+    return 1
+
+}
+
+/***
+ *    ########  ######## ##     ##  #######  ##     ## ########     ######   ########   #######  ##     ## ########     ######## ########   #######  ##     ##    ######## #### ##       ######## 
+ *    ##     ## ##       ###   ### ##     ## ##     ## ##          ##    ##  ##     ## ##     ## ##     ## ##     ##    ##       ##     ## ##     ## ###   ###    ##        ##  ##       ##       
+ *    ##     ## ##       #### #### ##     ## ##     ## ##          ##        ##     ## ##     ## ##     ## ##     ##    ##       ##     ## ##     ## #### ####    ##        ##  ##       ##       
+ *    ########  ######   ## ### ## ##     ## ##     ## ######      ##   #### ########  ##     ## ##     ## ########     ######   ########  ##     ## ## ### ##    ######    ##  ##       ######   
+ *    ##   ##   ##       ##     ## ##     ##  ##   ##  ##          ##    ##  ##   ##   ##     ## ##     ## ##           ##       ##   ##   ##     ## ##     ##    ##        ##  ##       ##       
+ *    ##    ##  ##       ##     ## ##     ##   ## ##   ##          ##    ##  ##    ##  ##     ## ##     ## ##           ##       ##    ##  ##     ## ##     ##    ##        ##  ##       ##       
+ *    ##     ## ######## ##     ##  #######     ###    ########     ######   ##     ##  #######   #######  ##           ##       ##     ##  #######  ##     ##    ##       #### ######## ######## 
+ */
+async function courseFileRemoveGroup(course_id, group_name, file_id) {
+
+    const course_query = await db.collection('courses').doc(course_id).collection('documents').doc(file_id)
+    .update({
+        groups: fields.arrayRemove(group_name)
+    })
+
+    return 1
+
+}
+
+/***
+ *    ########  ######## ##       ######## ######## ########    ######## #### ##       ######## 
+ *    ##     ## ##       ##       ##          ##    ##          ##        ##  ##       ##       
+ *    ##     ## ##       ##       ##          ##    ##          ##        ##  ##       ##       
+ *    ##     ## ######   ##       ######      ##    ######      ######    ##  ##       ######   
+ *    ##     ## ##       ##       ##          ##    ##          ##        ##  ##       ##       
+ *    ##     ## ##       ##       ##          ##    ##          ##        ##  ##       ##       
+ *    ########  ######## ######## ########    ##    ########    ##       #### ######## ######## 
+ */
+
+async function deleteFile(course_id, file_id, file_url) {
+
+    //Remove file from cloud
+    const file_query = await storage.refFromURL(file_url).delete()
+
+    //Remove file from db
+    const course_query = await db.collection('courses').doc(course_id).collection('documents').doc(file_id)
+    .delete()
+
+    return 1
+
+}
+
+
+export { 
+    getCurrentCourse,
+    setCurrentGroup,
+    addCourse,
+    getCourseInfos,
+    addGroupToCourse,
+    addCourseFiles,
+    getCourseFiles,
+    courseFileAddGroup,
+    courseFileRemoveGroup,
+    deleteFile
+}

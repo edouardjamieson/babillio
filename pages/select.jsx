@@ -94,7 +94,6 @@ export default function select() {
             created_at: Date.now(),
             admin: user.id,
             students: [],
-            documents:[],
             works:[],
         }
 
@@ -131,6 +130,68 @@ export default function select() {
                         <p>Créer votre premier cours en appuyant sur le bouton ci-dessous.</p>
                         <Link href="/create">
                             <a className="cta blue">Créer un cours</a>
+                        </Link>
+                        <div className="no-course_bg"></div>
+                    </div>
+                    
+                    :
+                    <div className="course-selector_container">
+                        <div className="section-header">
+                            <h1>Choisir un cours</h1>
+                            <div className="section-header_buttons">
+                                <Link href='/create'>
+                                    <a className="cta gray">Créer un cours</a>
+                                </Link>
+                            </div>
+                        </div>
+                        <ul className="course-selector_list">
+                            {
+                                userCourses.map(course => <SingleTeacherCourse key={course.id} course={course}/>)
+                            }
+                        </ul>
+                    </div>
+                    
+                    }
+    
+    
+    
+                </section>
+
+                <ErrorAlert onClick={() => setErrors("")} visible={validateEmpty(errors)} content={errors}/>
+
+                <Modal
+                    title="Créer un nouveau groupe"
+                    visible={modalVisible}
+                    description="Saisissez le nom ou numéro du nouveau groupe d'élèves"
+                >  
+                    <div className="input-container">
+                        <input value={newGroupName} onChange={e => setNewGroupName(e.target.value)} type="text" placeholder=" " className="input-container_input" />
+                        <span className="input-container_label">Ex : 1100</span>
+                    </div>  
+                    <div className="main-modal_buttons">
+                        <button className="cta gray" onClick={() => setModalVisible(false)}>Annuler</button>
+                        <button className="cta blue" onClick={() => handleAddGroup()}>Ajouter</button>
+                    </div>
+
+                </Modal>
+            </Layout>
+        )
+    }
+
+    if(user.data().type === "student") {
+        return (
+            <Layout
+                pageTitle="Choisir un cours"
+                navigationVisible={true}
+            >
+                <section className="course-selector">
+                    { !user.data().hasOwnProperty('courses') || user.data().courses.length === 0 ?
+                    
+                    <div className="no-course">
+                        <h1>Vous n’avez pas encore rejoint de cours!</h1>
+                        <p>Rejoingnez votre premier cours en appuyant sur le bouton ci-dessous.</p>
+                        <Link href="/join">
+                            <a className="cta blue">Rejoindre un cours</a>
                         </Link>
                         <div className="no-course_bg"></div>
                     </div>
