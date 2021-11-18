@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Loader from '../../components/Loader'
+import Loader from '/components/Loader'
 
 import { Router, useRouter } from 'next/dist/client/router'
 import { useState, useEffect, useRef } from 'react'
 
-import { getAuth, insertUserInDB } from '../../functions/user.db'
-import { auth, google } from '../../functions/firebase'
-import { validateEmail, validateEmpty, validatePassword } from '../../functions/utils'
+import { getAuth, insertUserInDB } from '/functions/user.db'
+import { auth, google } from '/functions/firebase'
+import { validateEmail, validateEmpty, validatePassword } from '/functions/utils'
 
 export default function register() {
 
@@ -27,7 +27,7 @@ export default function register() {
     // ====================================================================
     useEffect(() => {
         getAuth((user) => {
-            if(user !== null) router.push('/')
+            if(user !== null) router.push('/app')
         })
 
         setIsLoading(false)
@@ -47,9 +47,9 @@ export default function register() {
                         account_setup: false
                     }
                     insertUserInDB(data)
-                    .then(r => router.push('/account/setup'))
+                    .then(r => router.push('/app/account/setup'))
                 }else{
-                    router.push('/')
+                    router.push('/app')
                 }
             })
             .catch(err => null)
@@ -87,7 +87,7 @@ export default function register() {
                     account_setup: false
                 }
                 insertUserInDB(data)
-                .then(r => router.push('/account/setup'))
+                .then(r => router.push('/app/account/setup'))
             })
             .catch(err => {
                 console.log(err);

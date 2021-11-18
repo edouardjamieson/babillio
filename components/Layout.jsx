@@ -19,7 +19,7 @@ export default function Layout({ children, pageTitle, navigationVisible, current
     useEffect(() => {
         auth.onAuthStateChanged(user => {
             if(!user) {
-                router.push('/account/login')
+                router.push('/app/account/login')
             }else{
                 getUserByID(user.uid)
                 .then(u => {
@@ -33,8 +33,8 @@ export default function Layout({ children, pageTitle, navigationVisible, current
                                 onGetGroupInfos(c)
                                 setIsLoading(false)
                             }else{
-                                if(router.route !== '/select') {
-                                    router.push(`/select?gobackto=${router.asPath}`)
+                                if(router.route !== '/app/select') {
+                                    router.push(`/app/select?gobackto=${router.asPath}`)
                                 }
                                 setIsLoading(false)
                             }

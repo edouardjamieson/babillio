@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import CurrentGroupBanner from "../components/CurrentGroupBanner";
-import Modal from "../components/Modal";
-import ErrorAlert from "../components/ErrorAlert";
-import SuccessAlert from '../components/SuccessAlert'
-import { generateUniqueID, validateEmpty } from "../functions/utils";
-import { auth, storage } from "../functions/firebase";
-import { addCourseFiles, courseFileAddGroup, courseFileRemoveGroup, deleteFile, getCourseFiles } from "../functions/course.db";
-import NoResults from "../components/NoResults";
-import LoaderSmall from '../components/LoaderSmall'
+import Layout from "/components/Layout";
+import CurrentGroupBanner from "/components/CurrentGroupBanner";
+import Modal from "/components/Modal";
+import ErrorAlert from "/components/ErrorAlert";
+import SuccessAlert from '/components/SuccessAlert'
+import { generateUniqueID, validateEmpty } from "/functions/utils";
+import { auth, storage } from "/functions/firebase";
+import { addCourseFiles, courseFileAddGroup, courseFileRemoveGroup, deleteFile, getCourseFiles } from "/functions/course.db";
+import NoResults from "/components/NoResults";
+import LoaderSmall from '/components/LoaderSmall'
 
 import { HiDownload, HiOutlineEyeOff, HiOutlineTrash, HiUpload } from 'react-icons/hi'
 import { useRouter } from "next/dist/client/router";

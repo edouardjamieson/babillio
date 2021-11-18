@@ -50,7 +50,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                 { navigationVisible ?
                 <ul>
                     <li>
-                        <Link href="/documents">
+                        <Link href="/app/documents">
                             <a className={currentPage === 'documents' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
                                 <HiOutlineDocumentText />
                                 <span>Documents</span>
@@ -60,7 +60,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                     </li>
                     { user.data().type === "teacher" ?
                     <li>
-                        <Link href="/students">
+                        <Link href="/app/students">
                             <a className={currentPage === 'students' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
                                 <HiOutlineUsers />
                                 <span>Élèves</span>
@@ -69,7 +69,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                         </Link>
                     </li> : null }
                     <li>
-                        <Link href="/homework">
+                        <Link href="/app/homework">
                             <a className={currentPage === 'homework' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
                                 <HiOutlineBeaker />
                                 <span>Travaux</span>
@@ -78,7 +78,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                         </Link>
                     </li>
                     <li>
-                        <Link href="/inbox">
+                        <Link href="/app/inbox">
                             <a className={currentPage === 'inbox' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
                                 <HiOutlineChat />
                                 <span>Messages</span>
@@ -100,31 +100,31 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
             </div>
 
             <div ref={actionsMenu} className="main-header_actions-menu hidden">
-                <Link href="/account">
+                <Link href="/app/account">
                     <a className="main-header_actions-profile">
                         <strong>{user.data().name}</strong>
                         <FormatedType/>
                     </a>
                 </Link>
-                <Link href="/account/payments">
+                <Link href="/app/account/payments">
                     <a className="main-header_action-item">
                         <HiOutlineCurrencyDollar />
                         <span>Paiements</span>
                     </a>
                 </Link>
-                <Link href="/account/edit">
+                <Link href="/app/account/edit">
                     <a className="main-header_action-item">
                         <HiOutlinePencil />
                         <span>Modifier le profil</span>
                     </a>
                 </Link>
-                <Link href="/settings">
+                <Link href="/app/settings">
                     <a className="main-header_action-item">
                         <HiOutlineCog />
                         <span>Paramètres</span>
                     </a>
                 </Link>
-                <Link href="/account/logout">
+                <Link href="/app/account/logout">
                     <a className="main-header_action-item">
                         <HiOutlineLogout />
                         <span>Déconnexion</span>

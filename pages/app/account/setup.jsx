@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from 'next/dist/client/router'
 
-import Layout from "../../components/Layout";
+import Layout from "/components/Layout";
 
-import { validateEmpty } from "../../functions/utils";
-import { editUserByID, getAuth, getUserByID } from "../../functions/user.db";
+import { validateEmpty } from "/functions/utils";
+import { editUserByID, getAuth, getUserByID } from "/functions/user.db";
 
 export default function setup() {
 
@@ -26,7 +26,7 @@ export default function setup() {
                 if(u.data().hasOwnProperty('account_setup') && u.data().account_setup === false) {
                     setUser(u)
                 }else{
-                    router.push('/')
+                    router.push('/app')
                 }
             })
         })
@@ -77,7 +77,7 @@ export default function setup() {
 
         editUserByID(user.id, new_infos)
         .then(r => {
-            router.push('/')
+            router.push('/app')
         })
 
     }

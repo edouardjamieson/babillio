@@ -1,14 +1,14 @@
-import Layout from "../components/Layout"
+import Layout from "/components/Layout"
 import Link from "next/link";
-import Loader from '../components/Loader'
+import Loader from '/components/Loader'
 
 import { useEffect, useState } from "react";
-import { addGroupToCourse, getCourseInfos, setCurrentGroup } from "../functions/course.db";
-import { getAuth, getLoggedUser, getUserByID } from "../functions/user.db";
-import { auth } from "../functions/firebase";
-import Modal from "../components/Modal";
-import { validateEmpty } from "../functions/utils";
-import ErrorAlert from "../components/ErrorAlert";
+import { addGroupToCourse, getCourseInfos, setCurrentGroup } from "/functions/course.db";
+import { getAuth, getLoggedUser, getUserByID } from "/functions/user.db";
+import { auth } from "/functions/firebase";
+import Modal from "/components/Modal";
+import { validateEmpty } from "/functions/utils";
+import ErrorAlert from "/components/ErrorAlert";
 import { useRouter } from "next/dist/client/router";
 
 export default function select() {
@@ -108,7 +108,7 @@ export default function select() {
 
         setCurrentGroup(course_id, data)
         .then(r => {
-            const gobackurl = router.query.gobackto || '/'
+            const gobackurl = router.query.gobackto || '/app'
             router.push(gobackurl)
         })
 

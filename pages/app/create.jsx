@@ -1,14 +1,14 @@
 import gsap from "gsap";
 import { useRef, useState } from "react";
 
-import { validateEmpty, getDayName } from "../functions/utils";
+import { validateEmpty, getDayName } from "../../functions/utils";
 
 import Calendar from "react-calendar";
-import Layout from "../components/Layout";
-import { addCourse } from "../functions/course.db";
+import Layout from "/components/Layout";
+import { addCourse } from "/functions/course.db";
 import { Router, useRouter } from "next/dist/client/router";
-import Modal from "../components/Modal";
-import ErrorAlert from "../components/ErrorAlert";
+import Modal from "/components/Modal";
+import ErrorAlert from "/components/ErrorAlert";
 
 export default function create() {
 
@@ -233,7 +233,7 @@ export default function create() {
         }
 
         addCourse(course)
-        .then(() => router.push('/'))
+        .then(() => router.push('/app'))
         
     }
 

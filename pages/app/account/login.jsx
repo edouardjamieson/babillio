@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Loader from '../../components/Loader'
+import Loader from '/components/Loader'
 
 import { useRouter } from 'next/dist/client/router'
 import { useState, useEffect, useRef } from 'react'
 
-import { auth, google } from '../../functions/firebase'
-import { validateEmail, validateEmpty } from '../../functions/utils'
+import { auth, google } from '/functions/firebase'
+import { validateEmail, validateEmpty } from '/functions/utils'
 
 export default function login() {
 
@@ -27,7 +27,7 @@ export default function login() {
         auth.onAuthStateChanged(user => {
             console.log(user);
             if(user) {
-                router.push('/')
+                router.push('/app')
             }else{
                 setIsLoading(false)
             }
@@ -49,7 +49,7 @@ export default function login() {
                         account_setup: false
                     }
                     insertUserInDB(data)
-                    .then(r => router.push('/account/setup'))
+                    .then(r => router.push('/app/account/setup'))
                 }
             })
             .catch(err => null)
