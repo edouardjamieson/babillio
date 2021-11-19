@@ -61,7 +61,12 @@ export default function Layout({ children, pageTitle, navigationVisible, current
 
             { isLoading !== true && currentUser !== null ?
             <>
-                <Header navigationVisible={navigationVisible} currentPage={currentPage} isLoading={isLoading} user={currentUser} />
+                <Header
+                    navigationVisible={navigationVisible}
+                    currentPage={currentPage}
+                    user={currentUser}
+                    course={course}
+                />
                 <main className="main-content" id={id}>
                     <div className="wrapper">
                         {children}

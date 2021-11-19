@@ -68,4 +68,26 @@ async function editUserByID(id, data) {
     return query
 }
 
-export { getAuth, getLoggedUser, insertUserInDB, getUserByID, editUserByID }
+/***
+ *     ######   ######## ########    ##     ##  ######  ######## ########   ######  
+ *    ##    ##  ##          ##       ##     ## ##    ## ##       ##     ## ##    ## 
+ *    ##        ##          ##       ##     ## ##       ##       ##     ## ##       
+ *    ##   #### ######      ##       ##     ##  ######  ######   ########   ######  
+ *    ##    ##  ##          ##       ##     ##       ## ##       ##   ##         ## 
+ *    ##    ##  ##          ##       ##     ## ##    ## ##       ##    ##  ##    ## 
+ *     ######   ########    ##        #######   ######  ######## ##     ##  ######  
+ */
+async function getUsers(id) {
+
+    if(typeof id === 'object') {
+        const user_query = await db.collection('users').get()
+        const users = user_query.docs.filter(user => id.includes(user.id))
+        return users
+    }else{
+        const user_query = await db.collection('users').doc(id).get()
+        return {id: user_query.id, data:user_query.data()}
+    }
+
+}
+
+export { getAuth, getLoggedUser, insertUserInDB, getUserByID, editUserByID, getUsers }

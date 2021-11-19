@@ -235,7 +235,6 @@ async function deleteFile(course_id, file_id, file_url) {
 
 }
 
-
 export { 
     getCurrentCourse,
     setCurrentGroup,
@@ -246,5 +245,5 @@ export {
     getCourseFiles,
     courseFileAddGroup,
     courseFileRemoveGroup,
-    deleteFile
+    deleteFile,
 }

@@ -97,10 +97,8 @@ export default function documents() {
             setDocumentUploadURL("")
 
             const files = [...courseFiles]
-            files.push(new_file)
-
-            console.log(files);
-            setCourseFiles(files)
+            files.unshift(new_file)
+            handleProcessCourseFiles(files, 'desc')
             
             setModalVisible(false)
             setSuccess(`Fichier téléversé et ajouté à ce groupe.`)
@@ -262,6 +260,29 @@ export default function documents() {
     }
 
     /***
+     *                                                
+     *      ####   ####  #####  #####    #####  #   # 
+     *     #      #    # #    #   #      #    #  # #  
+     *      ####  #    # #    #   #      #####    #   
+     *          # #    # #####    #      #    #   #   
+     *     #    # #    # #   #    #      #    #   #   
+     *      ####   ####  #    #   #      #####    #   
+     *                                                
+     */
+
+    const handleProcessCourseFiles = (files, orderby) => {
+
+        let ordered
+        if(orderby === 'desc') {
+            ordered = files.sort((a,b) => b.data.created_at - a.data.created_at)
+        }
+
+        setCourseFiles(ordered)
+        setLoading(false)
+
+    }
+
+    /***
      *                                              
      *     ###### ###### ###### ######  ####  ##### 
      *     #      #      #      #      #    #   #   
@@ -278,8 +299,7 @@ export default function documents() {
 
             getCourseFiles(groupInfos.course.id)
             .then(files => {
-                setCourseFiles(files.map(f => ({ id:f.id, data:f.data() })))
-                setLoading(false)
+                handleProcessCourseFiles(files.map(f => ({ id:f.id, data:f.data() })), 'desc')
             })
 
         }
@@ -290,11 +310,7 @@ export default function documents() {
     return (
         <Layout pageTitle="Documents" id="documents" currentPage="documents" navigationVisible={true} requiresCourse={true} onGetGroupInfos={(data) => setGroupInfos(data)}>
 
-            <div className="documents-overview">
-                {
-                    groupInfos ? <CurrentGroupBanner groupInfos={groupInfos} /> : null
-                }
-                
+            <div className="documents-overview default-page">
                 <div className="section-header">
                     <h1>Documents</h1>
                     <div className="section-header_buttons">

@@ -389,6 +389,9 @@ h2 {
 .section-header .section-header_buttons {
   margin-left: auto;
 }
+.default-page {
+  padding-top: 7rem;
+}
 /***
  *       ###    ##       ######## ########  ########  ######  
  *      ## ##   ##       ##       ##     ##    ##    ##    ## 
@@ -654,6 +657,42 @@ h2 {
 .main-header_action-item:hover {
   color: var(--color-primary);
 }
+.main-header_course-button {
+  display: flex;
+  transition: all ease 0.5s;
+  margin-left: 1rem;
+  align-items: center;
+  background-color: var(--color-pale);
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.main-header_course-button i {
+  font-size: 1.5rem;
+  font-style: normal ;
+  margin-right: 1rem;
+}
+.main-header_course-button div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.main-header_course-button h4 {
+  font-size: 1rem;
+  transition: all ease 0.5s;
+  color: var(--color-darkgray);
+}
+.main-header_course-button span {
+  font-size: 0.8rem;
+  color: var(--color-gray);
+}
+.main-header_course-button:hover {
+  box-shadow: 0 0 0 5px var(--color-primary-faded);
+}
+.main-header_course-button:hover h4 {
+  color: var(--color-primary);
+}
 /***
  *    ##    ##    ###    ##     ## ####  ######      ###    ######## ####  #######  ##    ## 
  *    ###   ##   ## ##   ##     ##  ##  ##    ##    ## ##      ##     ##  ##     ## ###   ## 
@@ -757,7 +796,7 @@ h2 {
   align-items: center;
   margin-bottom: 1rem;
 }
-.login-container .login-formbox .login-input_container i {
+.login-container .login-formbox .login-input_container svg {
   font-size: 1.2rem;
   margin-right: 1rem;
 }
@@ -1121,7 +1160,6 @@ h2 {
 }
 .course-selector_container {
   width: 100%;
-  padding-top: 7rem;
 }
 .course-selector_list {
   display: flex;
@@ -1261,9 +1299,6 @@ h2 {
   margin-left: 1rem;
   margin-right: auto;
 }
-.course-overview {
-  padding-top: 7rem;
-}
 #documents-modal .uploader-container {
   margin-bottom: 1.2rem;
 }
@@ -1326,9 +1361,6 @@ h2 {
 #documents-modal .uploader-past_documents .uploader-past_document:hover span,
 #documents-modal .uploader-past_documents .uploader-past_document:hover i {
   color: var(--color-pale);
-}
-.documents-overview {
-  padding-top: 7rem;
 }
 .documents-list {
   width: 100%;

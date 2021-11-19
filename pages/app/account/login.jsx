@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Loader from '/components/Loader'
+import { HiOutlineAtSymbol, HiOutlineLockClosed } from 'react-icons/hi'
 
 import { useRouter } from 'next/dist/client/router'
 import { useState, useEffect, useRef } from 'react'
@@ -99,13 +100,13 @@ export default function login() {
                             <div className="login-separator">ou</div>
 
                             <div className="login-input_container">
-                                <i className="icon-email"></i>
+                                <HiOutlineAtSymbol />
                                 <input value={loginEmail} onChange={e => setLoginEmail(e.target.value)} id="login-email" autoFocus="autofocus" type="text" className="login-input" placeholder=" "/>
                                 <span className="login-label">Adresse courriel</span>
                             </div>
 
                             <div className="login-input_container">
-                                <i className="icon-lock"></i>
+                                <HiOutlineLockClosed />
                                 <input value={loginPass} onChange={e => setLoginPass(e.target.value)} id="login-password" type="password" className="login-input" placeholder=" "/>
                                 <span className="login-label">Mot de passe</span>
                             </div>

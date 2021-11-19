@@ -145,6 +145,8 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
 .section-header { width: 100%; display: flex; align-items: center;
     .section-header_buttons { margin-left: auto; }
 }
+
+.default-page { padding-top: 7rem; }
 /***
  *       ###    ##       ######## ########  ########  ######  
  *      ## ##   ##       ##       ##     ##    ##    ##    ## 
@@ -191,7 +193,14 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
  *    ##     ## ##       ##     ## ##     ## ##       ##    ##  
  *    ##     ## ######## ##     ## ########  ######## ##     ## 
  */
- @import (less) "./content/header.less";
+@import (less) "./content/header.less";
+.main-header_course-button { display: flex; transition: all ease 0.5s; margin-left: 1rem; align-items: center; background-color: var(--color-pale); border: none; padding: 0.5rem 1.2rem; border-radius: 100px; cursor: pointer;
+    i { font-size: 1.5rem; font-style: normal ; margin-right: 1rem;}
+    div { display: flex; flex-direction: column; align-items: flex-start }
+    h4 { font-size: 1rem; transition: all ease 0.5s; color: var(--color-darkgray) }
+    span { font-size: 0.8rem; color: var(--color-gray) }
+    &:hover { box-shadow: 0 0 0 5px var(--color-primary-faded); h4 { color: var(--color-primary) }}
+}
 /***
  *    ##    ##    ###    ##     ## ####  ######      ###    ######## ####  #######  ##    ## 
  *    ###   ##   ## ##   ##     ##  ##  ##    ##    ## ##      ##     ##  ##     ## ###   ## 
@@ -235,7 +244,7 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
     .no-course_bg { width: 40%; height: 80%; position: absolute; right: 0; bottom: 0; background-image: url(../public/images/man_standing_computer.svg); background-size: contain; background-position: bottom right; background-repeat: no-repeat; }
 }
 
-.course-selector_container { width: 100%; padding-top: 7rem; }
+.course-selector_container { width: 100%; }
 .course-selector_list { display: flex; flex-direction: column; margin-top: 2rem; }
 .course-selector_item { width: 100%; margin-bottom: 2rem; background-color: var(--color-primary); color: var(--color-white); padding: 2rem; border-radius: 15px;
     .course-selector_item-head { width: 100%; display: flex; align-items: center;
@@ -282,7 +291,7 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
 // ====================================================================
 // INDEX
 // ====================================================================
-.course-overview { padding-top: 7rem; }
+.course-overview { }
 
 // ====================================================================
 // DOCUMENTS
@@ -304,7 +313,7 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
         }
     }
 }
-.documents-overview { padding-top: 7rem; }
+.documents-overview {  }
 .documents-list { width: 100%; display: flex; flex-wrap: wrap; margin-top: 1rem; }
 .single_document { width: 24%; margin-right: 1%; margin-bottom: 1rem; &::after { content: ''; display: block; padding-top: 100%; } &:nth-child(4n) { margin-right: 0; }}
 .single_document-content { position: absolute; display: flex; flex-direction: column; z-index: 1; top: 0; left: 0; width: 100%; height: 100%; padding: 1rem; border-radius: 15px; background-color: var(--color-lightgray);

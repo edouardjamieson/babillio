@@ -122,7 +122,7 @@ export default function select() {
                 pageTitle="Choisir un cours"
                 navigationVisible={true}
             >
-                <section className="course-selector">
+                <section className="course-selector default-page">
                     { !user.data().hasOwnProperty('courses') || user.data().courses.length === 0 ?
                     
                     <div className="no-course">

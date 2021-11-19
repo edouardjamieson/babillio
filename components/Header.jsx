@@ -3,11 +3,15 @@ import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 
 import { HiOutlineDocumentText, HiOutlineUsers, HiOutlineBeaker, HiOutlineChat, HiOutlineSearch, HiOutlineCurrencyDollar, HiOutlinePencil, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi'
+import { useRouter } from 'next/dist/client/router'
 
-export default function Header({ navigationVisible, currentPage, isLoading, user }) {
+export default function Header({ navigationVisible, currentPage, user, course }) {
 
     const actionsMenu = useRef()
     const actionsMenuTrigger = useRef()
+
+    const router = useRouter()
+
     useEffect(() => {
 
         actionsMenuTrigger.current.addEventListener('click', () => {
@@ -18,6 +22,8 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
                 gsap.to(actionsMenu.current, { height:0, duration:0.5, ease:"Expo.easeOut", onComplete:() => { actionsMenu.current.classList.add('hidden') } })
             }
         })
+
+        console.log(course);
         
     }, [])
 
@@ -41,7 +47,7 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
         <header className="main-header">
 
             <div className="main-header_logo-container">
-                <Link href="/">
+                <Link href="/app">
                     <a className="main-header_logo"></a>
                 </Link>
             </div>
@@ -90,13 +96,25 @@ export default function Header({ navigationVisible, currentPage, isLoading, user
             </nav>
 
             <div className="main-header_actions-container">
-                { navigationVisible ?
-                <ul className="main-header_actions">
+                <div className="main-header_actions">
+                    {navigationVisible ?
                     <button className="main-header_search-button">
                         <HiOutlineSearch />
-                    </button>
-                    <button ref={actionsMenuTrigger} className="main-header_profile-button" style={{ backgroundImage: `url(${user.data().profile_picture})` }}></button>
-                </ul> : null }
+                    </button> : null }
+
+                    {navigationVisible && course ?
+                        <button className="main-header_course-button" onClick={() => router.push(`/app/select?gobackto=${router.asPath}`)}>
+                            <i>{course.course.data.icon}</i>
+                            <div>
+                                <h4>{course.course.data.name}</h4>
+                                <span>gr. {course.group.name}</span>
+                            </div>
+                        </button>
+                    : null}
+
+                    {navigationVisible && user ?
+                    <button ref={actionsMenuTrigger} className="main-header_profile-button" style={{ backgroundImage: `url(${user.data().profile_picture})` }}></button> : null}
+                </div>
             </div>
 
             <div ref={actionsMenu} className="main-header_actions-menu hidden">
