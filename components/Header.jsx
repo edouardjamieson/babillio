@@ -23,7 +23,6 @@ export default function Header({ navigationVisible, currentPage, user, course })
             }
         })
 
-        console.log(course);
         
     }, [])
 
@@ -106,8 +105,9 @@ export default function Header({ navigationVisible, currentPage, user, course })
                         <button className="main-header_course-button" onClick={() => router.push(`/app/select?gobackto=${router.asPath}`)}>
                             <i>{course.course.data.icon}</i>
                             <div>
-                                <h4>{course.course.data.name}</h4>
-                                <span>gr. {course.group.name}</span>
+                                <h4>{}</h4>
+                                <h4>{course.course.data.name.length >= 15 ? course.course.data.name.substring(0, 15) + "..." : course.course.data.name}</h4>
+                                <span>gr. {course.group.data.name}</span>
                             </div>
                         </button>
                     : null}

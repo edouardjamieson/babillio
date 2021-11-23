@@ -229,7 +229,9 @@ export default function create() {
                 to: courseDates.to.iso
             },
             times: courseTimeSlots,
-            created_at: Date.now()
+            created_at: Date.now(),
+            groups: [],
+            files:[]
         }
 
         addCourse(course)

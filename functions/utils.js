@@ -41,4 +41,14 @@ function generateUniqueID() {
     return id
 }
 
-export { validateEmail, validateEmpty, validatePassword, getDayName, generateUniqueID }
+function generateSmallID() {
+    let text = ""
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+    for (let i = 0; i < 6; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text
+}
+
+export { validateEmail, validateEmpty, validatePassword, getDayName, generateUniqueID, generateSmallID }

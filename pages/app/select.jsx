@@ -33,12 +33,16 @@ export default function select() {
             .then(value => {setUser(value); return value })
             .then((user) => {
                 if(user.data().hasOwnProperty('courses') && user.data().courses.length > 0) {
-                    //fetch user's course
-                    const courses = user.data().courses.filter(c => c.role === 'admin').map(c => c.id)
+
+                    if(user.data().type === 'teacher') {
+                        //fetch user's course
+                        const courses = user.data().courses.filter(c => c.role === 'admin').map(c => c.id)
+                        getCourseInfos(courses)
+                        .then(c => setUserCourses(c))
+                        .then(() => setLoading(false))
+                    }
+
                     
-                    getCourseInfos(courses)
-                    .then(c => setUserCourses(c))
-                    .then(() => setLoading(false))
                 }else{
                     setLoading(false)
                 }
@@ -49,33 +53,34 @@ export default function select() {
 
     }, [])
 
-    const SingleTeacherCourse = ({course}) => {
+    const SingleTeacherCourse = ({data}) => {
+        console.log(data);
         return (
             <li className="course-selector_item">
                 <div className="course-selector_item-head">
-                    <span>{course.data.icon}</span>
-                    <h2>{course.data.name}</h2>
+                    <span>{data.course.data.icon}</span>
+                    <h2>{data.course.data.name}</h2>
                     <p className="course-selector_item-dates">
-                        du <strong>{ new Date(course.data.dates.from).toLocaleDateString() }</strong> au <strong>{ new Date(course.data.dates.to).toLocaleDateString() }</strong>
+                        du <strong>{ new Date(data.course.data.dates.from).toLocaleDateString() }</strong> au <strong>{ new Date(data.course.data.dates.to).toLocaleDateString() }</strong>
                     </p>
                 </div>
-                { course.data.hasOwnProperty('groups') && course.data.groups.length > 0 ?
+                { data.groups.length > 0 ?
                     <div className="course-selector_item-groups">
-                        {course.data.groups.map(group => 
-                            <button className="course-selector_item-group" key={group.name} onClick={() => handleSelectGroup(course.id, group)}>
+                        {data.groups.map(group => 
+                            <button className="course-selector_item-group" key={group.data.name} onClick={() => handleSelectGroup(data.course.id, group.id)}>
                                 <span>gr.</span>
-                                <h4>{group.name}</h4>
+                                <h4>{group.data.name}</h4>
                                 <div>
                                     <i className="icon-users"></i>
-                                    <span>{group.students.length}</span>
+                                    <span>{group.data.students.length}</span>
                                 </div>
                             </button>
                         )}
-                        <button className="course-selector_add-group" onClick={() => {setNewGroupCourseID(course.id); setModalVisible(true)}}>+</button>
+                        <button className="course-selector_add-group" onClick={() => {setNewGroupCourseID(data.course.id); setModalVisible(true)}}>+</button>
                     </div>
                     :
                     <div style={{marginTop:"1rem"}}>
-                        <button type='button' className='cta white' onClick={() => {setNewGroupCourseID(course.id); setModalVisible(true)}}>Créer un groupe</button>
+                        <button type='button' className='cta white' onClick={() => {setNewGroupCourseID(data.course.id); setModalVisible(true)}}>Créer un groupe</button>
                     </div>
                 }
             </li>
@@ -95,6 +100,7 @@ export default function select() {
             admin: user.id,
             students: [],
             works:[],
+            course_id: newGroupCourseID
         }
 
         addGroupToCourse(newGroupCourseID, data)
@@ -104,9 +110,9 @@ export default function select() {
 
     }
 
-    const handleSelectGroup = (course_id, data) => {
+    const handleSelectGroup = (course_id, group_id) => {
 
-        setCurrentGroup(course_id, data)
+        setCurrentGroup(course_id, group_id)
         .then(r => {
             const gobackurl = router.query.gobackto || '/app'
             router.push(gobackurl)
@@ -146,7 +152,7 @@ export default function select() {
                         </div>
                         <ul className="course-selector_list">
                             {
-                                userCourses.map(course => <SingleTeacherCourse key={course.id} course={course}/>)
+                                userCourses.map(data => <SingleTeacherCourse key={data.course.id} data={data}/>)
                             }
                         </ul>
                     </div>

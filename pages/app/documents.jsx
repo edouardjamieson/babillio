@@ -56,9 +56,6 @@ export default function documents() {
             
             //Check if there's duplicates
             const name = file.name
-            // if(docs.some(el => el.name === name)) {
-            //     return setDocumentUploadErrors("Un fichier avec le même figure déjà dans la liste.")
-            // }
 
             //Check type
             let type = file.name.split('.')
@@ -90,7 +87,7 @@ export default function documents() {
             return setDocumentUploadErrors("Veuillez selectionner au moins un fichier ou entrer une URL.")
         }
         
-        addCourseFiles(groupInfos.course.id, auth.currentUser.uid, documentUploadFiles, groupInfos.group.name)
+        addCourseFiles(groupInfos.course.id, auth.currentUser.uid, documentUploadFiles, groupInfos.group.id)
         .then(new_file => {
             setDocumentUploadFiles([])
             setDocumentUploadErrors("")
@@ -137,7 +134,7 @@ export default function documents() {
     // Gets all documents from course where this group is not included
     // ====================================================================
     const PastDocuments = () => {
-        const not_this_group_docs = courseFiles.filter(doc => !doc.data.groups.includes(groupInfos.group.name))
+        const not_this_group_docs = courseFiles.filter(doc => !doc.data.groups.includes(groupInfos.group.id))
 
         if(courseFiles.length < 1 || not_this_group_docs.length < 1) return null
         return (
@@ -162,7 +159,7 @@ export default function documents() {
     // Gets all documents from course where this group is included
     // ====================================================================
     const DocumentsList = () => {
-        const this_group_docs = courseFiles.filter(doc => doc.data.groups.includes(groupInfos.group.name))
+        const this_group_docs = courseFiles.filter(doc => doc.data.groups.includes(groupInfos.group.id))
         if(this_group_docs.length < 1) return <NoResults/>
 
         return (
@@ -236,7 +233,7 @@ export default function documents() {
     // Removes this group from file visible list
     // ====================================================================
     const handleHideFile = () => {
-        const group_id = groupInfos.group.name
+        const group_id = groupInfos.group.id
 
         courseFileRemoveGroup(groupInfos.course.id, group_id, documentActionsID)
         .then(() => {
@@ -272,6 +269,7 @@ export default function documents() {
 
     const handleProcessCourseFiles = (files, orderby) => {
 
+
         let ordered
         if(orderby === 'desc') {
             ordered = files.sort((a,b) => b.data.created_at - a.data.created_at)
@@ -294,8 +292,10 @@ export default function documents() {
      */
 
     useEffect(() => {
+
         
         if(groupInfos) {
+            console.log(groupInfos);
 
             getCourseFiles(groupInfos.course.id)
             .then(files => {
