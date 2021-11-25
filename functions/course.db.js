@@ -179,7 +179,7 @@ async function addCourseFiles(course_id, user_id, file, group_id) {
         files: fields.arrayUnion(file_query.id)
     })
 
-    return new_file
+    return {id: file_query.id, data: new_file}
 
 }
 

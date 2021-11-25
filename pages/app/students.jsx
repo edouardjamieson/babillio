@@ -33,25 +33,16 @@ export default function students() {
         
     }
 
-    const GroupCode = () => {
-
-        // const code = 
-
-
-    }
-
     useEffect(() => {
 
         if(groupInfos) {
-            const list = groupInfos.group.students
+            console.log(groupInfos);
+            const list = groupInfos.group.data.students
             getUsers(list)
             .then(users => {
                 setCourseStudents(users)
                 setLoading(false)
             })
-
-            getGroupCode(groupInfos.course.id, groupInfos.group.name)
-
 
         }
 

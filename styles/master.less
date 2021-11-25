@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 /***
  *    ##     ##    ###    ########  ####    ###    ########  ##       ########  ######  
  *    ##     ##   ## ##   ##     ##  ##    ## ##   ##     ## ##       ##       ##    ## 
@@ -67,7 +68,8 @@
  *     ######   ######## ##    ## ######## ##     ## ##     ## ######## 
  */
 body {
-    font-family: 'Montserrat', sans-serif;
+    // font-family: 'Montserrat', sans-serif;
+    font-family: 'Outfit', sans-serif;
     color: var(--color-black);
     background-color: var(--color-body-bg);
     line-height: 1.5em;
@@ -333,3 +335,15 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
 // ====================================================================
 // STUDENTS
 // ====================================================================
+
+// ====================================================================
+// JOIN COURSE
+// ====================================================================
+.course-join { height: 100vh; 
+    .course-join_form { height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-right: 40%; 
+        h1 { margin-bottom: 1rem; }
+        p { color: var(--color-gray); margin-bottom: 2rem; }
+        .course-join_bg { width: 40%; height: 80%; position: absolute; right: 0; bottom: 0; background-image: url(../public/images/man_sitting_phone.svg); background-size: contain; background-position: bottom right; background-repeat: no-repeat; }
+        .cta { margin-top: 1rem; }
+    }
+}

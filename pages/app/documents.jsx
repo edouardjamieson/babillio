@@ -67,7 +67,7 @@ export default function documents() {
             //Check size
             const size_in_bytes = file.size
             const size_in_mb = size_in_bytes/1000000
-            if(size_in_mb > 10) {
+            if(size_in_mb > 30) {
                 return setDocumentUploadErrors("Ce fichier dépasse la taille maximale de 10MB.")
             }
 

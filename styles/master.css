@@ -26,6 +26,34 @@
   font-display: swap;
   src: url(https://fonts.gstatic.com/s/montserrat/v18/JTURjIg1_i6t8kCHKm45_dJE7g4.ttf) format('truetype');
 }
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/outfit/v1/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1C4E.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/outfit/v1/QGYyz_MVcBeNP4NjuGObqx1XmO1I4QK1C4E.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/outfit/v1/QGYyz_MVcBeNP4NjuGObqx1XmO1I4e6yC4E.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/outfit/v1/QGYyz_MVcBeNP4NjuGObqx1XmO1I4deyC4E.ttf) format('truetype');
+}
 /***
  *    ##     ##    ###    ########  ####    ###    ########  ##       ########  ######  
  *    ##     ##   ## ##   ##     ##  ##    ## ##   ##     ## ##       ##       ##    ## 
@@ -96,7 +124,7 @@
  *     ######   ######## ##    ## ######## ##     ## ##     ## ######## 
  */
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Outfit', sans-serif;
   color: var(--color-black);
   background-color: var(--color-body-bg);
   line-height: 1.5em;
@@ -513,7 +541,7 @@ h2 {
   z-index: 5;
 }
 .main-header_logo-container {
-  margin-right: 1rem;
+  margin-right: 2rem;
   display: flex;
   align-items: center;
 }
@@ -534,19 +562,20 @@ h2 {
   align-items: center;
   justify-content: center;
 }
+.main-header_navigation ul li {
+  margin-right: 1rem;
+}
 .main-header_navigation-item {
-  height: 3.5rem;
-  width: 3.5rem;
+  height: 3rem;
   margin: 0 1rem;
-  background-color: var(--color-pale);
   display: flex;
   align-items: center;
-  padding: 0 1rem;
-  border-radius: 100px;
+  text-decoration: none;
 }
 .main-header_navigation-item svg {
   font-size: 1.5rem;
   color: var(--color-darkgray);
+  transition: all ease 0.2s;
 }
 .main-header_navigation-item span:not(.label) {
   width: 0;
@@ -567,23 +596,44 @@ h2 {
   border-radius: 100px;
 }
 .main-header_navigation-item.current-page {
-  background-color: var(--color-primary);
   width: auto;
   text-decoration: none;
+  background-color: var(--color-pale);
+  padding: 1rem;
+  border-radius: 100px;
 }
 .main-header_navigation-item.current-page svg {
-  color: var(--color-white);
+  color: var(--color-primary);
   margin-right: 1rem;
 }
 .main-header_navigation-item.current-page span {
   width: auto;
   overflow: initial;
   font-weight: var(--fw-bold);
-  color: var(--color-white);
+  color: var(--color-primary);
+}
+.main-header_navigation-item:not(.current-page):hover svg {
+  color: var(--color-primary);
 }
 .main-header_navigation-item:not(.current-page):hover .label {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+.main-header_navigation-item .notification-dot {
+  background-color: var(--color-error);
+  display: flex;
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 100px;
+  color: var(--color-white);
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-style: normal;
+  position: absolute;
+  top: 15%;
+  right: -35%;
 }
 .main-header_actions {
   display: flex;
@@ -598,6 +648,8 @@ h2 {
   border-radius: 100px;
   background-color: transparent;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 .main-header_actions .main-header_profile-button {
   width: 2.5rem;
@@ -1444,4 +1496,37 @@ h2 {
 .single_document-action:hover span.label {
   opacity: 1;
   top: -60%;
+}
+.course-join {
+  height: 100vh;
+}
+.course-join .course-join_form {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-right: 40%;
+}
+.course-join .course-join_form h1 {
+  margin-bottom: 1rem;
+}
+.course-join .course-join_form p {
+  color: var(--color-gray);
+  margin-bottom: 2rem;
+}
+.course-join .course-join_form .course-join_bg {
+  width: 40%;
+  height: 80%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-image: url(../public/images/man_sitting_phone.svg);
+  background-size: contain;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+.course-join .course-join_form .cta {
+  margin-top: 1rem;
 }

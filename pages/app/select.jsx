@@ -10,6 +10,7 @@ import Modal from "/components/Modal";
 import { validateEmpty } from "/functions/utils";
 import ErrorAlert from "/components/ErrorAlert";
 import { useRouter } from "next/dist/client/router";
+import { generateSmallID } from "../../functions/utils";
 
 export default function select() {
 
@@ -100,7 +101,8 @@ export default function select() {
             admin: user.id,
             students: [],
             works:[],
-            course_id: newGroupCourseID
+            course_id: newGroupCourseID,
+            join_code: `gr${newGroupName}-${generateSmallID()}`
         }
 
         addGroupToCourse(newGroupCourseID, data)
@@ -134,7 +136,7 @@ export default function select() {
                     <div className="no-course">
                         <h1>Vous n’avez pas encore créé de cours!</h1>
                         <p>Créer votre premier cours en appuyant sur le bouton ci-dessous.</p>
-                        <Link href="/create">
+                        <Link href="/app/create">
                             <a className="cta blue">Créer un cours</a>
                         </Link>
                         <div className="no-course_bg"></div>
@@ -145,7 +147,7 @@ export default function select() {
                         <div className="section-header">
                             <h1>Choisir un cours</h1>
                             <div className="section-header_buttons">
-                                <Link href='/create'>
+                                <Link href='/app/create'>
                                     <a className="cta gray">Créer un cours</a>
                                 </Link>
                             </div>
@@ -196,7 +198,7 @@ export default function select() {
                     <div className="no-course">
                         <h1>Vous n’avez pas encore rejoint de cours!</h1>
                         <p>Rejoingnez votre premier cours en appuyant sur le bouton ci-dessous.</p>
-                        <Link href="/join">
+                        <Link href="/app/join">
                             <a className="cta blue">Rejoindre un cours</a>
                         </Link>
                         <div className="no-course_bg"></div>
@@ -207,7 +209,7 @@ export default function select() {
                         <div className="section-header">
                             <h1>Choisir un cours</h1>
                             <div className="section-header_buttons">
-                                <Link href='/create'>
+                                <Link href='/app/create'>
                                     <a className="cta gray">Créer un cours</a>
                                 </Link>
                             </div>

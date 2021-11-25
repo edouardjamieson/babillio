@@ -88,6 +88,7 @@ export default function Header({ navigationVisible, currentPage, user, course })
                                 <HiOutlineChat />
                                 <span>Messages</span>
                                 <span className="label">Messages</span>
+                                <i className="notification-dot"></i>
                             </a>
                         </Link>
                     </li>
