@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { validateEmpty, getDayName } from "../../functions/utils";
 
@@ -13,7 +13,7 @@ import { getGroupByCode } from "../../functions/course.db";
 import { addUserToGroup } from "../../functions/user.db";
 import { auth } from "../../functions/firebase";
 
-export default function join() {
+export default function joinPage() {
 
     const router = useRouter()
 
