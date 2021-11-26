@@ -1,5 +1,5 @@
-import gsap from "gsap";
 import { useEffect, useState, useRef } from "react";
+import gsap from "gsap";
 
 import { validateEmpty, getDayName } from "../../functions/utils";
 
