@@ -1,19 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import gsap from "gsap";
+import { validateEmpty } from "../../functions/utils";
 
-import { validateEmpty, getDayName } from "../../functions/utils";
-
-import Calendar from "react-calendar";
 import Layout from "/components/Layout";
-import { addCourse } from "/functions/course.db";
-import { Router, useRouter } from "next/dist/client/router";
-import Modal from "/components/Modal";
+import { useRouter } from "next/dist/client/router";
 import ErrorAlert from "/components/ErrorAlert";
 import { getGroupByCode } from "../../functions/course.db";
 import { addUserToGroup } from "../../functions/user.db";
 import { auth } from "../../functions/firebase";
 
-export default function joinPage() {
+export default function join() {
 
     const router = useRouter()
 
