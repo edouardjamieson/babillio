@@ -10,7 +10,6 @@ import NoResults from "/components/NoResults";
 import LoaderSmall from '/components/LoaderSmall'
 import { getUsers } from "../../functions/user.db";
 import QRCode from "react-qr-code";
-import { getGroupCode } from "../../functions/code.db";
 
 export default function students() {
 
@@ -19,10 +18,10 @@ export default function students() {
     const [success, setSuccess] = useState("")
     const [loading, setLoading] = useState(true)
 
-    const [modalVisible, setModalVisible] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false)
     const [modalScreen, setModalScreen] = useState("add")
-    const [modalTitle, setModalTitle] = useState("Ajouter des élèves")
-    const [modalDesc, setModalDesc] = useState("Faites entrer le code ci-dessous par vous élèves pour rejoindre le groupe.")
+    const [modalTitle, setModalTitle] = useState("")
+    const [modalDesc, setModalDesc] = useState("")
 
     const [groupInfos, setGroupInfos] = useState(null)
     const [courseStudents, setCourseStudents] = useState([])
@@ -37,12 +36,12 @@ export default function students() {
 
         if(groupInfos) {
             console.log(groupInfos);
-            const list = groupInfos.group.data.students
-            getUsers(list)
-            .then(users => {
-                setCourseStudents(users)
-                setLoading(false)
-            })
+            // const list = groupInfos.group.data.students
+            // getUsers(list)
+            // .then(users => {
+            //     setCourseStudents(users)
+            //     setLoading(false)
+            // })
 
         }
 
@@ -55,7 +54,12 @@ export default function students() {
                 <div className="section-header">
                     <h1>Élèves</h1>
                     <div className="section-header_buttons">
-                        <button className="cta blue">Ajouter</button>
+                        <button className="cta blue" onClick={() => {
+                            setModalScreen("add")
+                            setModalDesc("Faites entrer le code ci-dessous par vous élèves ou faites leur scannez le code pour rejoindre le groupe.")
+                            setModalTitle("Ajouter des élèves")
+                            setModalVisible(true)
+                        }}>Ajouter</button>
                     </div>
                 </div>
 
@@ -73,12 +77,19 @@ export default function students() {
 
                 {
                     modalScreen === "add" ?
-                        <>
-                            <QRCode value="https://babillio.com/api/hello" />
-                            <div className="main-modal_buttons">
-                                <button className="cta gray">Terminé</button>
+                        <div className="students-join">
+                            <div className="students-join_qrcode">
+                                {
+                                    groupInfos ? <QRCode value={groupInfos.group.data.join_code} /> : <LoaderSmall/>
+                                }
                             </div>
-                        </>
+                            {
+                                groupInfos ? <h2>{groupInfos.group.data.join_code}</h2> : null
+                            }
+                            <div className="main-modal_buttons">
+                                <button className="cta gray" onClick={() => setModalVisible(false)}>Terminé</button>
+                            </div>
+                        </div>
                     : null
                 }
 

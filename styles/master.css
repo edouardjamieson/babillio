@@ -1504,6 +1504,11 @@ h2 {
   opacity: 1;
   top: -60%;
 }
+.students-join {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .course-join {
   height: 100vh;
 }
