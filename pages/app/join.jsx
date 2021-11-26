@@ -9,6 +9,9 @@ import { addCourse } from "/functions/course.db";
 import { Router, useRouter } from "next/dist/client/router";
 import Modal from "/components/Modal";
 import ErrorAlert from "/components/ErrorAlert";
+import { getGroupByCode } from "../../functions/course.db";
+import { addUserToGroup } from "../../functions/user.db";
+import { auth } from "../../functions/firebase";
 
 export default function join() {
 
@@ -22,6 +25,21 @@ export default function join() {
         if(!validateEmpty(groupeCode)) {
             return setError("Veuillez entrer un code valide.")
         }
+
+        getGroupByCode(groupeCode)
+        .then(group => {
+            if(group === 0) {
+                return setError("Ce code est invalide.")
+            }
+            // gr123-P2TYgu
+            addUserToGroup(group.data().course_id, group.id, auth.currentUser.uid)
+            .then(result => {
+                if(result === 0) {
+                    return setError("Vous êtes déjà dans ce groupe.")
+                }
+                router.push('/app/select')
+            })
+        })
 
     }
 

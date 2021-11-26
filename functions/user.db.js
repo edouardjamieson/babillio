@@ -1,4 +1,4 @@
-import { auth, db } from './firebase'
+import { auth, db, fields } from './firebase'
 /***
  *     ######   ######## ########    ##        #######   ######    ######   ######## ########     ##     ##  ######  ######## ########  
  *    ##    ##  ##          ##       ##       ##     ## ##    ##  ##    ##  ##       ##     ##    ##     ## ##    ## ##       ##     ## 
@@ -90,4 +90,38 @@ async function getUsers(id) {
 
 }
 
-export { getAuth, getLoggedUser, insertUserInDB, getUserByID, editUserByID, getUsers }
+/***
+ *          ##  #######  #### ##    ##     ######   ########   #######  ##     ## ########  
+ *          ## ##     ##  ##  ###   ##    ##    ##  ##     ## ##     ## ##     ## ##     ## 
+ *          ## ##     ##  ##  ####  ##    ##        ##     ## ##     ## ##     ## ##     ## 
+ *          ## ##     ##  ##  ## ## ##    ##   #### ########  ##     ## ##     ## ########  
+ *    ##    ## ##     ##  ##  ##  ####    ##    ##  ##   ##   ##     ## ##     ## ##        
+ *    ##    ## ##     ##  ##  ##   ###    ##    ##  ##    ##  ##     ## ##     ## ##        
+ *     ######   #######  #### ##    ##     ######   ##     ##  #######   #######  ##        
+ */
+async function addUserToGroup(course_id, group_id, user_id) {
+
+    //user query
+    const user_query = await db.collection('users').doc(user_id).update({
+        courses: fields.arrayUnion({
+            id: course_id,
+            role: 'default'
+        })
+    })
+
+    //group query
+    const group_check_query = await db.collection('groups').doc(group_id).get()
+    if(group_check_query.data().students.includes(user_id)) {
+        return 0
+    }
+
+    const group_query = await db.collection('groups').doc(group_id).update({
+        students: fields.arrayUnion(user_id)
+    })
+
+    return 1
+
+
+}
+
+export { getAuth, getLoggedUser, insertUserInDB, getUserByID, editUserByID, getUsers, addUserToGroup }

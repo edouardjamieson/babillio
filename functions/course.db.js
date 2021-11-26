@@ -94,31 +94,55 @@ async function addCourse(data) {
  */
 async function getCourseInfos(courses) {
 
-    if(typeof courses === 'object') {
-        const data = []
-        const all_courses = await db.collection('courses').where('__name__', 'in', courses).get()
-        const all_groups = await db.collection('groups').get()
+    const data = []
+    const all_courses = await db.collection('courses').where('__name__', 'in', courses).get()
+    const all_groups = await db.collection('groups').get()
 
-        //get asked courses
-        const my_courses = all_courses.docs.filter(course => courses.includes(course.id)).map(course => ({ id: course.id, data:course.data() }))
-        //get groups for each courses
-        all_courses.forEach(course => {
-            data.push({
-                course: { id:course.id, data:course.data() },
-                groups: all_groups.docs.filter(group => course.data().groups.includes(group.id)).map(group => ({ id: group.id, data: group.data() }))
-            })
+    //get asked courses
+    const my_courses = all_courses.docs.filter(course => courses.includes(course.id)).map(course => ({ id: course.id, data:course.data() }))
+    //get groups for each courses
+    all_courses.forEach(course => {
+        data.push({
+            course: { id:course.id, data:course.data() },
+            groups: all_groups.docs.filter(group => course.data().groups.includes(group.id)).map(group => ({ id: group.id, data: group.data() }))
         })
-        return data
+    })
+    return data
+}
 
-    }else if(typeof courses === 'string') {
-        // const course_query = await db.collection('courses').doc(courses).get()
-        // const group_query = await db.collection('courses').doc(courses).collection('groups').get()
-        // return {
-        //     course: { id: course_query.id, data: course_query.data() },
-        //     groups: group_query.docs.map(group => ({ id: group.id, data: group.data() }))
-        // }
-    }
+/***
+ *     ######   ######## ########     ######   ########   #######  ##     ## ########   ######     #### ##    ## ########  #######   ######  
+ *    ##    ##  ##          ##       ##    ##  ##     ## ##     ## ##     ## ##     ## ##    ##     ##  ###   ## ##       ##     ## ##    ## 
+ *    ##        ##          ##       ##        ##     ## ##     ## ##     ## ##     ## ##           ##  ####  ## ##       ##     ## ##       
+ *    ##   #### ######      ##       ##   #### ########  ##     ## ##     ## ########   ######      ##  ## ## ## ######   ##     ##  ######  
+ *    ##    ##  ##          ##       ##    ##  ##   ##   ##     ## ##     ## ##              ##     ##  ##  #### ##       ##     ##       ## 
+ *    ##    ##  ##          ##       ##    ##  ##    ##  ##     ## ##     ## ##        ##    ##     ##  ##   ### ##       ##     ## ##    ## 
+ *     ######   ########    ##        ######   ##     ##  #######   #######  ##         ######     #### ##    ## ##        #######   ######  
+ */
+async function getGroupsInfos(courses, user_id) {
+    console.log(user_id);
 
+    const data = []
+    const my_courses = await db.collection('courses').where('__name__', 'in', courses).get()
+    const my_groups = await db.collection('groups').where('course_id', 'in', courses).where('students', 'array-contains', user_id).get()
+   
+    my_courses.docs.forEach(course => {
+
+        const group = my_groups.docs.filter(group => group.data().course_id === course.id)[0]
+
+        data.push({
+            course: { id: course.id, data: course.data() },
+            group: { id: group.id, data: group.data() }
+        })
+
+    })
+    return data
+
+
+    // return {
+    //     courses: my_courses.docs.map(course => ({ id: course.id, data: course.data() })),
+    //     groups: my_groups.docs.map(group => ({ id: group.id, data: group.data() })),
+    // }
 }
 
 /***
@@ -264,6 +288,25 @@ async function deleteFile(course_id, file_id, file_url) {
 
 }
 
+/***
+ *     ######   ######## ########     ######   ########   #######  ##     ## ########     ########  ##    ##     ######   #######  ########  ######## 
+ *    ##    ##  ##          ##       ##    ##  ##     ## ##     ## ##     ## ##     ##    ##     ##  ##  ##     ##    ## ##     ## ##     ## ##       
+ *    ##        ##          ##       ##        ##     ## ##     ## ##     ## ##     ##    ##     ##   ####      ##       ##     ## ##     ## ##       
+ *    ##   #### ######      ##       ##   #### ########  ##     ## ##     ## ########     ########     ##       ##       ##     ## ##     ## ######   
+ *    ##    ##  ##          ##       ##    ##  ##   ##   ##     ## ##     ## ##           ##     ##    ##       ##       ##     ## ##     ## ##       
+ *    ##    ##  ##          ##       ##    ##  ##    ##  ##     ## ##     ## ##           ##     ##    ##       ##    ## ##     ## ##     ## ##       
+ *     ######   ########    ##        ######   ##     ##  #######   #######  ##           ########     ##        ######   #######  ########  ######## 
+ */
+async function getGroupByCode(code) {
+
+    // group query
+    const group_query = await db.collection('groups').where('join_code', '==', code).get()
+    
+    if(group_query.empty === true) return 0
+    return group_query.docs[0]
+
+}
+
 
 
 export { 
@@ -277,4 +320,6 @@ export {
     courseFileAddGroup,
     courseFileRemoveGroup,
     deleteFile,
+    getGroupByCode,
+    getGroupsInfos
 }

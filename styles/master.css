@@ -1328,6 +1328,13 @@ h2 {
 .course-selector_item:hover .course-selector_item-dates {
   opacity: 1;
 }
+.course-selector_item.student-item {
+  cursor: pointer;
+  transition: all ease 0.2s;
+}
+.course-selector_item.student-item:hover {
+  box-shadow: 0 0 0 5px var(--color-primary-faded);
+}
 .current-group_banner {
   width: 100%;
   display: flex;

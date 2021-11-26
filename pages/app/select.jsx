@@ -11,6 +11,7 @@ import { validateEmpty } from "/functions/utils";
 import ErrorAlert from "/components/ErrorAlert";
 import { useRouter } from "next/dist/client/router";
 import { generateSmallID } from "../../functions/utils";
+import { getGroupsInfos } from "../../functions/course.db";
 
 export default function select() {
 
@@ -40,6 +41,14 @@ export default function select() {
                         const courses = user.data().courses.filter(c => c.role === 'admin').map(c => c.id)
                         getCourseInfos(courses)
                         .then(c => setUserCourses(c))
+                        .then(() => setLoading(false))
+                    }
+
+                    if(user.data().type === 'student') {
+                        //fetch user's course
+                        const courses = user.data().courses.filter(c => c.role === 'default').map(c => c.id)
+                        getGroupsInfos(courses, auth.currentUser.uid)
+                        .then(g => setUserCourses(g))
                         .then(() => setLoading(false))
                     }
 
@@ -84,6 +93,33 @@ export default function select() {
                         <button type='button' className='cta white' onClick={() => {setNewGroupCourseID(data.course.id); setModalVisible(true)}}>Créer un groupe</button>
                     </div>
                 }
+            </li>
+        )
+    }
+
+    const SingleStudentCourse = ({data}) => {
+        console.log(data);
+        return (
+            <li className="course-selector_item student-item" onClick={() => handleSelectGroup(data.course.id, data.group.id)}>
+                <div className="course-selector_item-head">
+                    <span>{data.course.data.icon}</span>
+                    <h2>{data.course.data.name}</h2>
+                    <p className="course-selector_item-dates">gr.{data.group.data.name}</p>
+                </div>
+                <div className="course-selector_item-groups">
+                    <div className="course-selector_item-group">
+                        <span>Travaux</span>
+                        <h4>{data.group.data.works.length}</h4>
+                    </div>
+                    <div className="course-selector_item-group">
+                        <span>Documents</span>
+                        <h4>1</h4>
+                    </div>
+                    <div className="course-selector_item-group">
+                        <span>Élèves</span>
+                        <h4>{data.group.data.students.length}</h4>
+                    </div>
+                </div>
             </li>
         )
     }
@@ -205,18 +241,18 @@ export default function select() {
                     </div>
                     
                     :
-                    <div className="course-selector_container">
+                    <div className="course-selector_container default-page">
                         <div className="section-header">
                             <h1>Choisir un cours</h1>
                             <div className="section-header_buttons">
-                                <Link href='/app/create'>
-                                    <a className="cta gray">Créer un cours</a>
+                                <Link href='/app/join'>
+                                    <a className="cta gray">Rejoindre un cours</a>
                                 </Link>
                             </div>
                         </div>
                         <ul className="course-selector_list">
                             {
-                                userCourses.map(course => <SingleTeacherCourse key={course.id} course={course}/>)
+                                userCourses.map(data => <SingleStudentCourse key={data.course.id} data={data}/>)
                             }
                         </ul>
                     </div>
