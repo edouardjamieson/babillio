@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/dist/client/router";
 
 import Layout from "/components/Layout";
-import CurrentGroupBanner from "/components/CurrentGroupBanner";
+import { HiOutlineChat, HiOutlineTrash } from 'react-icons/hi'
 import Modal from "/components/Modal";
 import ErrorAlert from "/components/ErrorAlert";
 import SuccessAlert from '/components/SuccessAlert'
@@ -29,6 +29,31 @@ export default function students() {
     const StudentsList = () => {
 
         if(courseStudents.length < 1) return <NoResults/>
+        return(
+            <ul className="students-list">
+                <li className="students-list_header students-list_item">
+                    <div className="students-list_item-section section-name">Nom</div>
+                    <div className="students-list_item-section section-email">Adresse courriel</div>
+                    <div className="students-list_item-section section-actions">Actions</div>
+                </li>
+                {
+                    courseStudents.map(user =>
+                        <li className="students-list_item" key={user.id}>
+                            <div className="students-list_item-section section-name">{ user.data.name }</div>
+                            <div className="students-list_item-section section-email">{ user.data.email }</div>
+                            <div className="students-list_item-section section-actions">
+                                <button type="button" className="students-list_item-action">
+                                    <HiOutlineChat />
+                                </button>
+                                <button type="button" className="students-list_item-action">
+                                    <HiOutlineTrash />
+                                </button>
+                            </div>
+                        </li>
+                    )
+                }
+            </ul>
+        )
         
     }
 
@@ -36,12 +61,12 @@ export default function students() {
 
         if(groupInfos) {
             console.log(groupInfos);
-            // const list = groupInfos.group.data.students
-            // getUsers(list)
-            // .then(users => {
-            //     setCourseStudents(users)
-            //     setLoading(false)
-            // })
+            const list = groupInfos.group.data.students
+            getUsers(list)
+            .then(users => {
+                setCourseStudents(users)
+                setLoading(false)
+            })
 
         }
 

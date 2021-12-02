@@ -9,32 +9,33 @@ import { addCourse } from "/functions/course.db";
 import { Router, useRouter } from "next/dist/client/router";
 import Modal from "/components/Modal";
 import ErrorAlert from "/components/ErrorAlert";
+import Input from "../../components/Input";
 
 export default function create() {
 
     const router = useRouter()
+
+    const [user, setUser] = useState(null)
 
     // ====================================================================
     // COURSE DATA
     // ====================================================================
     const [courseName, setCourseName] = useState("")
     const [courseIcon, setCourseIcon] = useState("⚡")
-    const [courseDates, setCourseDates] = useState({
-        from: {
-            calendar: new Date(),
-            iso: Date.now(),
-            local: new Date().toLocaleDateString(),
-            text: 'Choisir une date',
-            default: true
-        },
-        to: {
-            calendar: new Date(),
-            iso: Date.now(),
-            local: new Date().toLocaleDateString(),
-            text: 'Choisir une date',
-            default: true
-        }
-    })
+    const [courseDates, setCourseDates] = useState(
+        [
+            {
+                type:'from',
+                date: new Date().toLocaleDateString(),
+                formated: Date.now()
+            },
+            {
+                type:'to',
+                date: new Date().toLocaleDateString(),
+                formated: Date.now()
+            },
+        ]
+    )
     const [courseTimeSlots, setCourseTimeSlots] = useState([])
     const [courseTimeSlotDay, setcourseTimeSlotDay] = useState("monday")
     const [courseTimeSlotPlace, setcourseTimeSlotPlace] = useState("")
@@ -50,7 +51,6 @@ export default function create() {
         "calendar-to": "Choisir une date de fin de cours"
     }
     const [errors, setErrors] = useState("")
-    const [courseCreatorStep, setCourseCreatorStep] = useState(0)
 
     
     // ====================================================================
@@ -81,29 +81,16 @@ export default function create() {
     // ====================================================================
     // DATES
     // ====================================================================
-    const toggleDateSelector = (state) => {
-        if(state === 'from') {
-            setCurrentModal('calendar-from')
-        }else{
-            setCurrentModal('calendar-to')
-        }
-        setModalVisible(true)
-    }
-
-    const handleDateSelection = (value) => {
+    const handleDateSelection = (value, picker) => {
         const iso = new Date(value).getTime()
-        const local = new Date(value).toLocaleDateString()
-        const date = new Date(value)
-        
-        const dates = courseDates
-        const datepicker = currentModal === 'calendar-from' ? 'from' : 'to'
-        dates[datepicker].iso = iso
-        dates[datepicker].local = local
-        dates[datepicker].calendar = date
-        dates[datepicker].text = local
-        dates[datepicker].default = false
+        const local = new Date(value).toLocaleDateString()        
+        const dates = [...courseDates]
 
-        setModalVisible(false)
+        const index = picker === 'from' ? 0 : 1
+        dates[index].formated = iso
+        dates[index].date = local
+
+        setCourseDates(dates)
     }
 
     const handleAddTimeSlot = () => {
@@ -178,17 +165,17 @@ export default function create() {
     // ====================================================================
     const handleChangeStep = (step) => {
         if(courseCreatorStep === 0) {
-            if(courseDates.to.default === true || courseDates.from.default === true) {
-                return setErrors('Veuillez choisir des dates pour votre cours.')
-            }
-            if(courseDates.to.iso <= courseDates.from.iso) {
+            if(courseDates[1].formated <= courseDates[0].formated) {
                 return setErrors('La date de fin du cours doit être après celle de début du cours.')
             }
             if(!validateEmpty(courseName)) {
                 return setErrors('Le nom du cours ne peu être vide.')
             }
 
+            setCourseCreatorTitle("Ajouter des plages horaires")
             setErrors("")
+        }else {
+            setCourseCreatorTitle("Créer un cours")
         }
 
         setCourseCreatorStep(step)
@@ -201,10 +188,6 @@ export default function create() {
         switch (currentModal) {
             case "icons":
                 return <IconSelector />
-            case "calendar-from":
-                return <Calendar minDate={courseDates.from.calendar} value={courseDates.from.calendar} onChange={handleDateSelection} />
-            case "calendar-to":
-                return <Calendar minDate={courseDates.from.calendar} value={courseDates.to.calendar} onChange={handleDateSelection} />
             default:
                 return null
         }
@@ -216,22 +199,27 @@ export default function create() {
     const handleCreateCourse = () => {
 
         //If one of the three inputs is empty we do not add new time
-        handleAddTimeSlot()
-        if(courseTimeSlots.length < 1) {
-            return setErrors("Veuillez définir au moins une plage horaire.")
+        // handleAddTimeSlot()
+        // if(courseTimeSlots.length < 1) {
+        //     return setErrors("Veuillez définir au moins une plage horaire.")
+        // }
+
+        if(courseDates[1].formated <= courseDates[0].formated) {
+            return setErrors('La date de fin du cours doit être après celle de début du cours.')
+        }
+        if(!validateEmpty(courseName)) {
+            return setErrors('Le nom du cours ne peu être vide.')
         }
 
         const course = {
             icon: courseIcon,
             name: courseName,
             dates: {
-                from : courseDates.from.iso,
-                to: courseDates.to.iso
+                from : courseDates[0].formated,
+                to: courseDates[1].formated
             },
-            times: courseTimeSlots,
             created_at: Date.now(),
-            groups: [],
-            files:[]
+            created_by: user.id
         }
 
         addCourse(course)
@@ -247,46 +235,51 @@ export default function create() {
             requiresCourse={false}
             navigationVisible={true}
             id="course-creator"
+            onGetUserInfos={data => setUser(data)}
         >
 
             <section className="course-creator_container">
+                <h1>Créer un cours</h1>
                 <div className="course-creator">
-                    {
+                    <div className="course-creator_icon">
+                        <button className="course-creator_icon-picker" onClick={() => toggleIconSelector()}>{courseIcon}</button>
+                        <div>
+                            <strong>Icon du cours</strong>
+                            <span>Cliquez sur l'icon pour choisir</span>
+                        </div>
+                    </div>
+                    <div className="course-creator_infos">
+                        <span className="input-label">Nom du cours</span>
+                        <Input
+                            type="text"
+                            value={courseName}
+                            onChange={val => setCourseName(val)}
+                            placeholder="Histoire et géographie"
+                        />
+
+                        <div className="course-creator_dates">
+                            <span className="input-label">Date de début du cours</span>
+                            <span className="input-label">Date de fin du cours</span>
+                            <Input
+                                type="date"
+                                onChange={val => handleDateSelection(val, 'from')}
+                                placeholder={courseDates[0].date}
+                            />
+                            <Input
+                                type="date"
+                                onChange={val => handleDateSelection(val, 'to')}
+                                placeholder={courseDates[1].date}
+                            />
+                        </div>
+                    </div>
+                    <div className="course-creator_buttons">
+                        <button className="cta blue" onClick={() => handleCreateCourse()}>Terminé</button>
+                    </div>
+                    {/* {
                         courseCreatorStep === 0 ?
                         <>
-                            <h2>Créer un cours</h2>
-                            <div className="course-creator_icon">
-                                <button className="course-creator_icon-picker" onClick={() => toggleIconSelector()}>{courseIcon}</button>
-                                <div>
-                                    <strong>Icon du cours</strong>
-                                    <span>Cliquez sur l'icon pour choisir</span>
-                                </div>
-                            </div>
-                            <div className="course-creator_infos">
-                                <span className="input-label">Nom du cours</span>
-                                <div className="input-container">
-                                    <input type="text" value={courseName} onChange={(e) => setCourseName(e.target.value)} className="input-container_input" placeholder=" " />
-                                    <span className="input-container_label">Histoire et géographie</span>
-                                </div>
-                                <div className="course-creator_dates">
-                                    <span className="input-label">Date de début du cours</span>
-                                    <span className="input-label">Date de fin du cours</span>
-                                    <button className="course-creator_date-button" onClick={() => toggleDateSelector('from')}>
-                                        <i className="icon-calendar"></i>
-                                        <span>{ courseDates.from.text }</span>
-                                    </button>
-                                    <button className="course-creator_date-button" onClick={() => toggleDateSelector('to')}>
-                                        <i className="icon-calendar"></i>
-                                        <span>{ courseDates.to.text }</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="course-creator_buttons">
-                                <button className="cta blue" onClick={() => handleChangeStep(1)}>Suivant</button>
-                            </div>
                         </> :
                         <>
-                            <h2>Ajouter des plages horaires</h2>
                             {courseTimeSlots.length > 0 ?
                             <div className="course-creator_timeslots">
                                 {
@@ -338,7 +331,7 @@ export default function create() {
                                 <button className="cta blue" onClick={() => handleCreateCourse()}>Suivant</button>
                             </div>
                         </>
-                    }
+                    } */}
                 </div>
 
             </section>
@@ -348,6 +341,7 @@ export default function create() {
             <Modal
                 title={modalTitles[currentModal]}
                 visible={modalVisible}
+                onExit={() => setModalVisible(false)}
             >
                 <ModalContent/>
             </Modal>

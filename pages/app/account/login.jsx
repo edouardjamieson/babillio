@@ -12,7 +12,8 @@ import { validateEmail, validateEmpty } from '/functions/utils'
 export default function login() {
 
     const router = useRouter()
-    const [isLoading, setIsLoading] = useState(true)
+
+    const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState(null)
 
     // ====================================================================
@@ -21,26 +22,50 @@ export default function login() {
     const [loginEmail, setLoginEmail] = useState("")
     const [loginPass, setLoginPass] = useState("")
 
-    // ====================================================================
-    // CHECK IF USER IS LOGGED IN
-    // ====================================================================
+    /***
+     *                                              
+     *     ###### ###### ###### ######  ####  ##### 
+     *     #      #      #      #      #    #   #   
+     *     #####  #####  #####  #####  #        #   
+     *     #      #      #      #      #        #   
+     *     #      #      #      #      #    #   #   
+     *     ###### #      #      ######  ####    #   
+     *                                              
+     */
     useEffect(() => {
         auth.onAuthStateChanged(user => {
-            console.log(user);
             if(user) {
                 router.push('/app')
             }else{
-                setIsLoading(false)
+                setLoading(false)
             }
         })
 
     }, [])
 
+    /***
+     *                                                                                
+     *     #    #   ##   #    # #####  #      ######    #       ####   ####  # #    # 
+     *     #    #  #  #  ##   # #    # #      #         #      #    # #    # # ##   # 
+     *     ###### #    # # #  # #    # #      #####     #      #    # #      # # #  # 
+     *     #    # ###### #  # # #    # #      #         #      #    # #  ### # #  # # 
+     *     #    # #    # #   ## #    # #      #         #      #    # #    # # #   ## 
+     *     #    # #    # #    # #####  ###### ######    ######  ####   ####  # #    # 
+     *                                                                                
+     */
+
     const handleLogin = (e, provider) => {
+
+        // ====================================================================
+        // Check providers
+        // ====================================================================
         if(provider === "google") {
             auth.signInWithPopup(google)
             .then(result => {
                 if(result.additionalUserInfo.isNewUser === true) {
+                    // ====================================================================
+                    // Adds user if it is new
+                    // ====================================================================
                     const data = {
                         name: result.user.displayName,
                         email: result.user.email,
@@ -53,7 +78,9 @@ export default function login() {
                     .then(r => router.push('/app/account/setup'))
                 }
             })
-            .catch(err => null)
+            .catch(err => setErrors("Une erreur est survenue. Veuillez réessayer."))
+
+
         }else if(provider === "creds") {
             e.preventDefault()
 
@@ -78,10 +105,9 @@ export default function login() {
         <>
             <Head>
                 <title>Babillio - Connexion</title>
-                <meta name="description" content="Babillio - L'application pour les enseignants et éléves qui révolutionne les cours." />
             </Head>
 
-            { isLoading ? <Loader/> :
+            { loading ? <Loader/> :
             
                 <section className="login-container">
                     
@@ -115,10 +141,10 @@ export default function login() {
 
                             
                             <div className="login-links">
-                                <Link href="/account/register">
+                                <Link href="/app/account/register">
                                     <a>Pas encore de compte?</a>
                                 </Link>
-                                <Link href="/account/recover">
+                                <Link href="/app/account/recover">
                                     <a>J'ai perdu mon mot de passe</a>
                                 </Link>
                             </div>

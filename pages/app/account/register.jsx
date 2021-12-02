@@ -2,38 +2,63 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Loader from '/components/Loader'
 
-import { Router, useRouter } from 'next/dist/client/router'
+import { useRouter } from 'next/dist/client/router'
 import { useState, useEffect, useRef } from 'react'
 
 import { getAuth, insertUserInDB } from '/functions/user.db'
 import { auth, google } from '/functions/firebase'
 import { validateEmail, validateEmpty, validatePassword } from '/functions/utils'
+import { HiOutlineAtSymbol, HiOutlineLockClosed } from 'react-icons/hi'
 
 export default function register() {
 
     const router = useRouter()
-    const [isLoading, setIsLoading] = useState(true)
+
+    const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState(null)
 
     // ====================================================================
-    // REGISTER REFS
+    // REGISTER STATES
     // ====================================================================
-    const register_email = useRef()
-    const register_pass1 = useRef()
-    const register_pass2 = useRef()
+    const [registerEmail, setRegisterEmail] = useState("")
+    const [registerPass1, setRegisterPass1] = useState("")
+    const [registerPass2, setRegisterPass2] = useState("")
 
-    // ====================================================================
-    // CHECK IF USER IS LOGGED IN
-    // ====================================================================
+    /***
+     *                                              
+     *     ###### ###### ###### ######  ####  ##### 
+     *     #      #      #      #      #    #   #   
+     *     #####  #####  #####  #####  #        #   
+     *     #      #      #      #      #        #   
+     *     #      #      #      #      #    #   #   
+     *     ###### #      #      ######  ####    #   
+     *                                              
+     */
     useEffect(() => {
-        getAuth((user) => {
-            if(user !== null) router.push('/app')
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                router.push('/app')
+            }else{
+                setLoading(false)
+            }
         })
-
-        setIsLoading(false)
     }, [])
 
-    const handleRegister = (provider) => {
+    /***
+     *                                                                                                    
+     *     #    #   ##   #    # #####  #      ######    #####  ######  ####  #  ####  ##### ###### #####  
+     *     #    #  #  #  ##   # #    # #      #         #    # #      #    # # #        #   #      #    # 
+     *     ###### #    # # #  # #    # #      #####     #    # #####  #      #  ####    #   #####  #    # 
+     *     #    # ###### #  # # #    # #      #         #####  #      #  ### #      #   #   #      #####  
+     *     #    # #    # #   ## #    # #      #         #   #  #      #    # # #    #   #   #      #   #  
+     *     #    # #    # #    # #####  ###### ######    #    # ######  ####  #  ####    #   ###### #    # 
+     *                                                                                                    
+     */
+
+    const handleRegister = (e, provider) => {
+        // ====================================================================
+        // Check providers
+        // ====================================================================
         if(provider === "google") {
             auth.signInWithPopup(google)
             .then(result => {
@@ -48,35 +73,30 @@ export default function register() {
                     }
                     insertUserInDB(data)
                     .then(r => router.push('/app/account/setup'))
-                }else{
-                    router.push('/app')
                 }
             })
-            .catch(err => null)
+            .catch(err => setErrors("Une erreur est survenue. Veuillez réessayer."))
 
         }else if(provider === "creds") {
+            e.preventDefault()
 
-            const email = register_email.current.value
-            const password = register_pass1.current.value
-            const password2 = register_pass2.current.value
-
-            if(!validateEmpty(email) || !validateEmpty(password) || !validateEmpty(password2)) {
+            if(!validateEmpty(registerEmail) || !validateEmpty(registerPass1) || !validateEmpty(registerPass2)) {
                 return setErrors("Veuillez remplir tous les champs.")
             }
 
-            if(!validateEmail(email)) {
+            if(!validateEmail(registerEmail)) {
                 return setErrors("Veuillez entrer une adresse courriel valide.")
             }
 
-            if(!validatePassword(password)) {
+            if(!validatePassword(registerPass1)) {
                 return setErrors("Votre mot de passe doit contenir au moins 6 charactères ainsi qu'au moins un chiffre.")
             }
 
-            if(password !== password2) {
+            if(registerPass1 !== registerPass2) {
                 return setErrors("Les deux mots de passe doivent être identiques.")
             }
 
-            auth.createUserWithEmailAndPassword(email, password)
+            auth.createUserWithEmailAndPassword(registerEmail, registerPass1)
             .then(result => {
                 const data = {
                     name: result.user.displayName,
@@ -90,7 +110,6 @@ export default function register() {
                 .then(r => router.push('/app/account/setup'))
             })
             .catch(err => {
-                console.log(err);
                 if(err.code === "auth/email-already-in-use") {
                     return setErrors("Cette adresse courriel est déjà utilisée.")
                 }
@@ -102,16 +121,15 @@ export default function register() {
         <>
             <Head>
                 <title>Babillio - Créer mon compte</title>
-                <meta name="description" content="Babillio - L'application pour les enseignants et éléves qui révolutionne les cours." />
             </Head>
 
-            { isLoading ? <Loader/> :
+            { loading ? <Loader/> :
             
             <section className="login-container">
                     
                 <div className="login-formbox">
 
-                    <div className="login-formbox_form">
+                    <form className="login-formbox_form" onSubmit={(e) => handleRegister(e, "creds")}>
 
                         <h1>Content de vous rencontrer!</h1>
                         <p>Saisissez les informations suivante pour créer votre compte.</p>
@@ -124,36 +142,36 @@ export default function register() {
                         <div className="login-separator">ou</div>
 
                         <div className="login-input_container">
-                            <i className="icon-email"></i>
-                            <input ref={register_email} id="login-email" type="text" className="login-input" placeholder=" "/>
+                            <HiOutlineAtSymbol />
+                            <input value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} id="login-email" type="text" className="login-input" placeholder=" "/>
                             <span className="login-label">Adresse courriel</span>
                         </div>
 
                         <div className="login-input_container">
-                            <i className="icon-lock"></i>
-                            <input ref={register_pass1} id="login-password" type="password" className="login-input" placeholder=" "/>
+                            <HiOutlineLockClosed />
+                            <input value={registerPass1} onChange={(e) => setRegisterPass1(e.target.value)} id="login-password" type="password" className="login-input" placeholder=" "/>
                             <span className="login-label">Mot de passe</span>
                         </div>
 
                         <div className="login-input_container">
-                            <i className="icon-lock"></i>
-                            <input ref={register_pass2} id="login-password2" type="password" className="login-input" placeholder=" "/>
+                            <HiOutlineLockClosed />
+                            <input value={registerPass2} onChange={(e) => setRegisterPass2(e.target.value)} id="login-password2" type="password" className="login-input" placeholder=" "/>
                             <span className="login-label">Mot de passe (encore)</span>
                         </div>
 
-                        <button type="button" className="cta white" onClick={() => handleRegister("creds")}>Créer mon compte</button>
-          
+                        <input type="submit" className="cta white" value="Créer mon compte" />
+
                         <p className="login-warning">
                             En créant votre compte vous acceptez nos <a href="#">Conditions d'utilisations</a> ainsi que nos <a href="#">Politiques de confidentalité</a>.
                         </p>
                         <div className="login-links">
-                            <Link href="/account/login">
+                            <Link href="/app/account/login">
                                 <a>Vous avez déjà un compte?</a>
                             </Link>
                         </div>
                         
 
-                    </div>
+                    </form>
 
                 </div>
 

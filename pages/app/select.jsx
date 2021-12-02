@@ -18,18 +18,19 @@ export default function select() {
     const router = useRouter()
 
     const [loading, setLoading] = useState(true)
+    const [errors, setErrors] = useState("")
+
     const [user, setUser] = useState(null)
     const [userCourses, setUserCourses] = useState(null)
+
     const [modalVisible, setModalVisible] = useState(false)
+
     const [newGroupName, setNewGroupName] = useState("")
     const [newGroupCourseID, setNewGroupCourseID] = useState("")
-    const [errors, setErrors] = useState("")
 
 
 
     useEffect(() => {
-
-
         auth.onAuthStateChanged(u => {
             getUserByID(u.uid)
             .then(value => {setUser(value); return value })

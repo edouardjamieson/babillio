@@ -9,7 +9,7 @@ import Header from './Header'
 import { getCurrentCourse } from '../functions/course.db'
 import { auth } from '../functions/firebase'
 
-export default function Layout({ children, pageTitle, navigationVisible, currentPage, id, requiresCourse, onGetGroupInfos }) {
+export default function Layout({ children, pageTitle, navigationVisible, currentPage, id, requiresCourse, onGetGroupInfos, onGetUserInfos }) {
 
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(true)
@@ -23,14 +23,15 @@ export default function Layout({ children, pageTitle, navigationVisible, current
             }else{
                 getUserByID(user.uid)
                 .then(u => {
-                    setCurrentUser(u)   
+                    setCurrentUser(u)
+                    onGetUserInfos ? onGetUserInfos(u) : null
                     
                     if(requiresCourse === true) {
                         getCurrentCourse(u.id)
                         .then(c => {
                             if(c !== null) { 
                                 setCourse(c)
-                                onGetGroupInfos(c)
+                                onGetGroupInfos ? onGetGroupInfos(c) : null
                                 setIsLoading(false)
                             }else{
                                 if(router.route !== '/app/select') {

@@ -26,7 +26,6 @@ export default function join() {
             if(group === 0) {
                 return setError("Ce code est invalide.")
             }
-            // gr123-P2TYgu
             addUserToGroup(group.data().course_id, group.id, auth.currentUser.uid)
             .then(result => {
                 if(result === 0) {

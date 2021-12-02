@@ -10,7 +10,7 @@
 .main-header_navigation-item { height: 3rem; margin: 0 1rem; display: flex; align-items: center; text-decoration: none;
     svg { font-size: 1.5rem; color: var(--color-darkgray); transition: all ease 0.2s;  }
     span:not(.label) { width: 0; overflow: hidden; }
-    .label { position: absolute; top: 120%; left: 50%; transform: translate(-50%, 1rem); box-shadow: 0 0 10px var(--color-black10); pointer-events: none; opacity: 0; transition: all ease 0.2s; color: var(--color-primary); background-color: var(--color-pale); padding: 0.5rem 1rem; border-radius: 100px; }
+    .label { position: absolute; top: 120%; left: 50%; transform: translate(-50%, -10%); box-shadow: 0 0 10px var(--color-black10); pointer-events: none; opacity: 0; transition: all ease 0.2s; color: var(--color-primary); background-color: var(--color-pale); padding: 0.5rem 1rem; border-radius: 100px; }
 
     &.current-page { width: auto; text-decoration: none; background-color: var(--color-pale); padding: 1rem; border-radius: 100px;
         svg { color: var(--color-primary); margin-right: 1rem; }
@@ -20,7 +20,7 @@
     &:not(.current-page) {
         &:hover { 
             svg { color: var(--color-primary); }
-            .label { opacity: 1; transform: translate(-50%, 0); }
+            .label { opacity: 1; transform: translate(-50%, -25%); }
         }
     }
 
@@ -34,7 +34,7 @@
     .main-header_profile-button { width: 2.5rem; height: 2.5rem; border-radius: 100px; border:2px solid var(--color-primary); margin-left: 1rem; cursor: pointer; background-size: contain; }
 }
 
-.main-header_actions-menu { position: absolute; box-shadow: 0 0 10px var(--color-black10); display: flex; flex-direction: column; right: 2rem; top: 80%; overflow: hidden; background-color: var(--color-pale); border-radius: 10px;
+.main-header_actions-menu { position: absolute; box-shadow: 0 0 10px var(--color-black10); display: flex; flex-direction: column; right: 2rem; top: 95%; overflow: hidden; background-color: var(--color-pale); border-radius: 10px;
     &.hidden { height: 0; }
 }
 .main-header_actions-profile { background-color: var(--color-black10); display: flex; flex-direction: column; padding: 0.5rem 1rem; color: var(--color-black); text-decoration: none;

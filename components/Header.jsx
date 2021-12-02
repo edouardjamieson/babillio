@@ -8,23 +8,32 @@ import { useRouter } from 'next/dist/client/router'
 export default function Header({ navigationVisible, currentPage, user, course }) {
 
     const actionsMenu = useRef()
-    const actionsMenuTrigger = useRef()
+    const actionsMenuTrigger = useRef(null)
 
     const router = useRouter()
 
     useEffect(() => {
 
-        actionsMenuTrigger.current.addEventListener('click', () => {
-            if(actionsMenu.current.classList.contains('hidden')) {
-                gsap.fromTo(actionsMenu.current, { height:0 }, { height:'auto', duration:0.5, ease:"Expo.easeOut" })
-                actionsMenu.current.classList.remove('hidden')
-            }else{
-                gsap.to(actionsMenu.current, { height:0, duration:0.5, ease:"Expo.easeOut", onComplete:() => { actionsMenu.current.classList.add('hidden') } })
+        if(actionsMenuTrigger.current !== null) {
+            actionsMenuTrigger.current.addEventListener('click', handleActionMenuToggle)
+        }
+        
+        return () => {
+            if(actionsMenuTrigger.current !== null) {
+                actionsMenuTrigger.current.removeEventListener('click', handleActionMenuToggle)
             }
-        })
-
+        }
         
     }, [])
+
+    const handleActionMenuToggle = () => {
+        if(actionsMenu.current.classList.contains('hidden')) {
+            gsap.fromTo(actionsMenu.current, { height:0 }, { height:'auto', duration:0.5, ease:"Expo.easeOut" })
+            actionsMenu.current.classList.remove('hidden')
+        }else{
+            gsap.to(actionsMenu.current, { height:0, duration:0.5, ease:"Expo.easeOut", onComplete:() => { actionsMenu.current.classList.add('hidden') } })
+        }
+    }
 
     const FormatedType = () => {
 
@@ -46,7 +55,7 @@ export default function Header({ navigationVisible, currentPage, user, course })
         <header className="main-header">
 
             <div className="main-header_logo-container">
-                <Link href="/app">
+                <Link href={navigationVisible ? "/app" : "/app/account/setup"}>
                     <a className="main-header_logo"></a>
                 </Link>
             </div>

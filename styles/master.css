@@ -97,6 +97,7 @@
 *,
 *::before,
 *::after {
+  font-family: 'Outfit', sans-serif;
   position: relative;
   margin: 0;
   padding: 0;
@@ -257,6 +258,105 @@ h2 {
   font-family: 'Montserrat', sans-serif;
   color: var(--color-primary);
 }
+.input-container .input-container_calendar-label {
+  color: var(--color-gray);
+  cursor: pointer;
+}
+.input-container .input-container_calendar {
+  background-color: var(--color-lightgray);
+  border-radius: 15px;
+  padding: 1rem;
+  transition: all ease 0.2s;
+  color: var(--color-black);
+  position: absolute;
+  bottom: 110%;
+  left: 0;
+  width: 100%;
+}
+.input-container .input-container_calendar button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+.input-container .input-container_calendar .react-calendar__navigation {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.input-container .input-container_calendar .react-calendar__navigation__arrow {
+  font-size: 1.5rem;
+  width: 5%;
+}
+.input-container .input-container_calendar .react-calendar__navigation__prev2-button {
+  display: none;
+}
+.input-container .input-container_calendar .react-calendar__navigation__next2-button {
+  display: none;
+}
+.input-container .input-container_calendar .react-calendar__navigation__label__labelText {
+  font-weight: var(--fw-super);
+  font-size: 1.2rem;
+  text-transform: capitalize;
+}
+.input-container .input-container_calendar .react-calendar__month-view__weekdays__weekday {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: var(--fw-bold);
+}
+.input-container .input-container_calendar .react-calendar__month-view__weekdays__weekday * {
+  text-decoration: none;
+}
+.input-container .input-container_calendar .react-calendar__tile {
+  padding: 0.5rem 0;
+  font-weight: var(--fw-regular);
+  color: var(--color-darkgray);
+  transition: all ease 0.2s;
+  border-radius: 15px;
+}
+.input-container .input-container_calendar .react-calendar__tile abbr {
+  z-index: 1;
+}
+.input-container .input-container_calendar .react-calendar__tile:hover {
+  background-color: var(--color-primary-faded);
+  color: var(--color-white);
+}
+.input-container .input-container_calendar .react-calendar__tile--active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+.input-container .input-container_calendar.input-container_calendar-hidden {
+  opacity: 0;
+  bottom: 80%;
+  pointer-events: none;
+}
+.input-container .input-container_calendar-toggle {
+  background-color: var(--color-black10);
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all ease 0.2s;
+  color: var(--color-darkgray);
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-left: auto;
+  border-radius: 10px;
+}
+.input-container .input-container_calendar-toggle svg {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+.input-container .input-container_calendar-toggle span {
+  font-weight: var(--fw-bold);
+}
+.input-container .input-container_calendar-toggle:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
 .uploader-container {
   width: 100%;
   border: 3px dashed var(--color-primary);
@@ -325,21 +425,20 @@ h2 {
   width: 100%;
   z-index: 2;
 }
-.react-calendar {
+.react-calendar:not(.input-container_calendar) {
   background-color: var(--color-lightgray);
   border-radius: 15px;
   padding: 1rem;
-  font-family: 'Montserrat', sans-serif;
   color: var(--color-black);
   margin-top: 1rem;
 }
-.react-calendar button {
+.react-calendar:not(.input-container_calendar) button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
 }
-.react-calendar .react-calendar__navigation {
+.react-calendar:not(.input-container_calendar) .react-calendar__navigation {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -348,34 +447,34 @@ h2 {
   padding: 0.5rem 0;
   margin-bottom: 1rem;
 }
-.react-calendar .react-calendar__navigation__arrow {
+.react-calendar:not(.input-container_calendar) .react-calendar__navigation__arrow {
   font-size: 1.2rem;
   width: 5%;
 }
-.react-calendar .react-calendar__navigation__label__labelText {
+.react-calendar:not(.input-container_calendar) .react-calendar__navigation__label__labelText {
   font-weight: var(--fw-bold);
 }
-.react-calendar .react-calendar__month-view__weekdays__weekday {
+.react-calendar:not(.input-container_calendar) .react-calendar__month-view__weekdays__weekday {
   color: var(--color-primary);
   text-transform: uppercase;
   text-align: center;
   font-size: 0.8rem;
   font-weight: var(--fw-bold);
 }
-.react-calendar .react-calendar__month-view__weekdays__weekday * {
+.react-calendar:not(.input-container_calendar) .react-calendar__month-view__weekdays__weekday * {
   text-decoration: none;
 }
-.react-calendar .react-calendar__tile {
+.react-calendar:not(.input-container_calendar) .react-calendar__tile {
   padding: 0.5rem 0;
   font-weight: var(--fw-bold);
   transition: all ease 0.2s;
   border-radius: 5px;
 }
-.react-calendar .react-calendar__tile:hover {
+.react-calendar:not(.input-container_calendar) .react-calendar__tile:hover {
   background-color: var(--color-primary);
   color: var(--color-white);
 }
-.react-calendar .react-calendar__tile--active {
+.react-calendar:not(.input-container_calendar) .react-calendar__tile--active {
   background-color: var(--color-primary);
   color: var(--color-white);
 }
@@ -496,7 +595,6 @@ h2 {
   z-index: 5;
   top: 0;
   left: 0;
-  background-color: var(--color-black40);
 }
 .main-modal.main-modal_hidden {
   opacity: 0;
@@ -505,11 +603,31 @@ h2 {
 .main-modal.main-modal_hidden * {
   pointer-events: none;
 }
+.main-modal .main-modal_back {
+  background-color: var(--color-black40);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .main-modal_content-container {
   width: 60%;
   background-color: var(--color-pale);
   padding: 2rem;
   border-radius: 15px;
+}
+.main-modal_content-container .main-modal_content-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.main-modal_content-container .main-modal_exit {
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-gray);
 }
 .main-modal_content-container > p {
   margin-bottom: 1.5rem;
@@ -585,7 +703,7 @@ h2 {
   position: absolute;
   top: 120%;
   left: 50%;
-  transform: translate(-50%, 1rem);
+  transform: translate(-50%, -10%);
   box-shadow: 0 0 10px var(--color-black10);
   pointer-events: none;
   opacity: 0;
@@ -617,7 +735,7 @@ h2 {
 }
 .main-header_navigation-item:not(.current-page):hover .label {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -25%);
 }
 .main-header_navigation-item .notification-dot {
   background-color: var(--color-error);
@@ -666,7 +784,7 @@ h2 {
   display: flex;
   flex-direction: column;
   right: 2rem;
-  top: 80%;
+  top: 95%;
   overflow: hidden;
   background-color: var(--color-pale);
   border-radius: 10px;
@@ -1000,30 +1118,20 @@ h2 {
 .setup-account_step .input-container {
   margin-top: 1rem;
 }
-#course-creator {
-  background-image: url(../public/images/girl_sitting_computer.svg);
-  background-repeat: no-repeat;
-  background-position: bottom right;
-  background-size: calc(10vh + (80vh * 15 / 100)), auto;
-}
 #course-creator .error-container {
   bottom: 2rem;
 }
 .course-creator_container {
-  width: 80%;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   height: 100vh;
-  align-items: center;
+  justify-content: center;
   margin: auto;
+  padding: 0 10%;
 }
 .course-creator {
-  width: 100%;
-  background-color: var(--color-pale);
-  padding: 2rem;
-  border-radius: 15px;
-}
-.course-creator > h2 {
-  margin-bottom: 1rem;
+  margin-top: 2rem;
 }
 .course-creator_icon {
   width: 100%;
@@ -1061,19 +1169,16 @@ h2 {
 }
 .course-creator_icons {
   width: 100%;
-  border-radius: 15px;
   display: flex;
-  background-color: var(--color-lightgray);
   flex-wrap: wrap;
-  padding: 1rem;
 }
 .course-creator_icons .course-creator_icon-set {
   background-color: transparent;
   opacity: 0.8;
   border: none;
   font-size: 2rem;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
 }
 .course-creator_icons .course-creator_icon-set:hover {
@@ -1095,6 +1200,9 @@ h2 {
   margin-top: 1rem;
 }
 .course-creator_dates .input-label {
+  width: 49%;
+}
+.course-creator_dates .input-container {
   width: 49%;
 }
 .course-creator_date-button {
@@ -1124,8 +1232,8 @@ h2 {
   display: flex;
   align-items: center;
 }
-.course-creator_buttons .blue {
-  margin-left: auto;
+.course-creator_buttons .gray {
+  margin-right: auto;
 }
 .course-creator_schedules {
   display: flex;
@@ -1134,10 +1242,10 @@ h2 {
 }
 .course-creator_schedules .input-label {
   width: 49%;
-  margin-top: 1rem;
 }
 .course-creator_schedules .input-container {
   width: 49%;
+  margin-bottom: 1rem;
 }
 .course-creator_schedules .course-creator_schedules-add {
   background-color: var(--color-gray);
@@ -1180,7 +1288,6 @@ h2 {
   display: flex;
 }
 .no-course {
-  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -1508,6 +1615,36 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.students-list {
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+.students-list_item {
+  width: 100%;
+  display: flex;
+  background-color: var(--color-pale);
+  font-weight: var(--fw-thin);
+}
+.students-list_item:nth-child(2n) {
+  background-color: var(--color-lightgray);
+}
+.students-list_item-section {
+  padding: 0.8rem 1rem;
+}
+.students-list_item-section.section-name {
+  width: 35%;
+}
+.students-list_item-section.section-email {
+  width: 45%;
+}
+.students-list_item-section.section-actions {
+  width: 20%;
+}
+.students-list_header {
+  font-weight: var(--fw-bold);
 }
 .course-join {
   height: 100vh;

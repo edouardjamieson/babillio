@@ -5,6 +5,7 @@ import Layout from "/components/Layout";
 
 import { validateEmpty } from "/functions/utils";
 import { editUserByID, getAuth, getUserByID } from "/functions/user.db";
+import { auth } from '/functions/firebase'
 
 export default function setup() {
 
@@ -19,16 +20,19 @@ export default function setup() {
     const router = useRouter()
 
     useEffect(() => {
-        getAuth((user) => {
-            getUserByID(user.uid)
-            .then(u => {
-                console.log(u.data());
-                if(u.data().hasOwnProperty('account_setup') && u.data().account_setup === false) {
+        
+        auth.onAuthStateChanged(user => {
+            if(!user) {
+                router.push('/app/account/login')
+            }else{
+                getUserByID(user.uid)
+                .then(u => {
                     setUser(u)
-                }else{
-                    router.push('/app')
-                }
-            })
+                    if(u.data().account_setup === true) {
+                        router.push('/app')
+                    }
+                })
+            }
         })
 
     }, [])
@@ -140,7 +144,7 @@ export default function setup() {
     }
 
     return (
-        <Layout pageTitle="Configurer mon compte" navigationVisible={true}>
+        <Layout pageTitle="Configurer mon compte" navigationVisible={false}>
             
             <section className="setup-account">
                 <Steps/>

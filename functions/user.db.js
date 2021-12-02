@@ -77,17 +77,10 @@ async function editUserByID(id, data) {
  *    ##    ##  ##          ##       ##     ## ##    ## ##       ##    ##  ##    ## 
  *     ######   ########    ##        #######   ######  ######## ##     ##  ######  
  */
-async function getUsers(id) {
+async function getUsers(ids) {
 
-    if(typeof id === 'object') {
-        const user_query = await db.collection('users').get()
-        const users = user_query.docs.filter(user => id.includes(user.id))
-        return users
-    }else{
-        const user_query = await db.collection('users').doc(id).get()
-        return {id: user_query.id, data:user_query.data()}
-    }
-
+    const user_query = await db.collection('users').where('__name__', 'in', ids).get()
+    return user_query.docs.map(user => ({ id:user.id, data: user.data() }))
 }
 
 /***

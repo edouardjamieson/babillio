@@ -45,6 +45,7 @@
  *    ##     ## ########  ######  ########    ##    
  */
  *, *::before, *::after {
+    font-family: 'Outfit', sans-serif;
     position: relative;
     margin: 0;
     padding: 0;
@@ -107,7 +108,29 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
     }
     .input-container_chooser { background-color: transparent; font-size: 1.2rem; border:none; cursor: pointer; background-image: url(../public/images/arrow-blue-icon.svg); background-repeat: no-repeat; background-position: center right; background-size: 0.8rem; padding-right: 1rem; color: var(--color-darkgray); }
     .input-container_time { background-color: transparent; font-size: 1.2rem; border:none; cursor: pointer; color: var(--color-darkgray); font-family: 'Montserrat', sans-serif; color: var(--color-primary); }
+    .input-container_calendar-label { color: var(--color-gray); cursor: pointer; }
+    .input-container_calendar { background-color: var(--color-lightgray); border-radius: 15px; padding: 1rem; transition: all ease 0.2s; color: var(--color-black); position: absolute; bottom: 110%; left: 0; width: 100%;
+        button { background-color: transparent; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+        .react-calendar__navigation { width: 100%; display: flex; justify-content: space-between; margin-bottom: 1rem; }
+        .react-calendar__navigation__arrow { font-size: 1.5rem; width: 5%; }
+        .react-calendar__navigation__prev2-button { display: none; }
+        .react-calendar__navigation__next2-button { display: none; }
+        .react-calendar__navigation__label__labelText { font-weight: var(--fw-super); font-size: 1.2rem; text-transform: capitalize; }
+        .react-calendar__month-view__weekdays__weekday { text-transform: uppercase; text-align: center; font-size: 0.8rem; font-weight: var(--fw-bold); * { text-decoration: none; } }
+        .react-calendar__tile { padding: 0.5rem 0; font-weight: var(--fw-regular); color: var(--color-darkgray); transition: all ease 0.2s; border-radius: 15px; 
+            abbr { z-index: 1; }
+            &:hover { background-color: var(--color-primary-faded); color: var(--color-white); }
+        }
+        .react-calendar__tile--active { background-color: var(--color-primary); color: var(--color-white);  }
+        &.input-container_calendar-hidden { opacity: 0; bottom: 80%; pointer-events: none; }
+    }
+    .input-container_calendar-toggle { background-color: var(--color-black10); position: absolute; right: 1rem; display: flex; align-items: center; cursor: pointer; transition: all ease 0.2s; color: var(--color-darkgray); border:none; padding: 0.5rem 1rem; margin-left: auto; border-radius: 10px;
+        svg { font-size: 1.2rem; margin-right: 0.5rem; }
+        span { font-weight: var(--fw-bold); }
+        &:hover { background-color: var(--color-primary); color: var(--color-white); }
+    }
 }
+
 
 .uploader-container { width: 100%; border:3px dashed var(--color-primary); border-radius: 15px; padding: 1rem; cursor: pointer;
     .uploader-container_label { width: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-primary); cursor: pointer; transition: all ease 0.2s;
@@ -125,7 +148,7 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
     .date-selector_label { color: var(--color-gray); line-height: 1.2em; cursor: pointer; }
     .date-selector_selection { position: absolute; width: 100%; z-index: 2; }
 }
-.react-calendar { background-color: var(--color-lightgray); border-radius: 15px; padding: 1rem; font-family: 'Montserrat', sans-serif; color: var(--color-black); margin-top: 1rem;
+.react-calendar:not(.input-container_calendar) { background-color: var(--color-lightgray); border-radius: 15px; padding: 1rem; color: var(--color-black); margin-top: 1rem;
     button { background-color: transparent; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; }
     .react-calendar__navigation { width: 100%; display: flex; justify-content: space-between; background-color: var(--color-black10); border-radius: 5px; padding: 0.5rem 0; margin-bottom: 1rem; }
     .react-calendar__navigation__arrow { font-size: 1.2rem; width: 5%; }
@@ -179,10 +202,13 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
  *    ##     ## ##     ## ##     ## ##     ## ##       
  *    ##     ##  #######  ########  ##     ## ######## 
  */
-.main-modal { width: 100%; height: 100vh; position: fixed; display: flex; align-items: center; justify-content: center; transition: all ease 0.2s; z-index: 5; top: 0; left: 0; background-color: var(--color-black40);
+.main-modal { width: 100%; height: 100vh; position: fixed; display: flex; align-items: center; justify-content: center; transition: all ease 0.2s; z-index: 5; top: 0; left: 0;
     &.main-modal_hidden { opacity: 0; pointer-events: none; * { pointer-events: none; } }
+    .main-modal_back { background-color: var(--color-black40); width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
 }
 .main-modal_content-container { width: 60%; background-color: var(--color-pale); padding: 2rem; border-radius: 15px;
+    .main-modal_content-head { display: flex; justify-content: space-between; align-items: center; }
+    .main-modal_exit { background-color: transparent; cursor: pointer; border:none; font-size: 1.5rem; color: var(--color-gray); }
     > p { margin-bottom: 1.5rem; color: var(--color-gray); font-size: 0.8rem; }
 }
 .main-modal_buttons { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; }
@@ -240,7 +266,7 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
 // COURSE SELECTOR
 // ====================================================================
 .course-selector { min-height: 100vh; display: flex; }
-.no-course { height: 100vh; width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-right: 40%; 
+.no-course { width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-right: 40%; 
     h1 { margin-bottom: 1rem; }
     p { color: var(--color-gray); margin-bottom: 2rem; }
     .no-course_bg { width: 40%; height: 80%; position: absolute; right: 0; bottom: 0; background-image: url(../public/images/man_standing_computer.svg); background-size: contain; background-position: bottom right; background-repeat: no-repeat; }
@@ -343,6 +369,16 @@ h2 { font-size: 1.5rem; font-weight: var(--fw-bold); color: var(--color-black); 
     display: flex; flex-direction: column; align-items: center;
 }
 
+.students-list { width: 100%; border-radius: 15px; overflow: hidden; margin-top: 1rem; }
+.students-list_item { width: 100%; display: flex; background-color: var(--color-pale); font-weight: var(--fw-thin); &:nth-child(2n) { background-color: var(--color-lightgray); } }
+.students-list_item-section { padding: 0.8rem 1rem;
+    &.section-name { width: 35%; }
+    &.section-email { width: 45%; }
+    &.section-actions { width: 20%; }
+}
+.students-list_header { font-weight: var(--fw-bold);
+
+}
 
 // ====================================================================
 // JOIN COURSE

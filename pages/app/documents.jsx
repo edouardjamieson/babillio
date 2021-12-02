@@ -32,6 +32,7 @@ export default function documents() {
     const [documentUploadURL, setDocumentUploadURL] = useState("")
     const [documentUploadErrors, setDocumentUploadErrors] = useState("")
     const [documentActionsID, setDocumentActionsID] = useState("")
+    const [documentUploadMethod, setDocumentUploadMethod] = useState("")
 
     /***
      *                                                                                                   
@@ -72,10 +73,18 @@ export default function documents() {
             }
 
             setDocumentUploadFiles(file)
+            setDocumentUploadMethod("upload")
+            setModalScreen("publish")
             
         }
 
         
+    }
+
+    const handleAddDocumentFromPastDoc = (doc) => {
+        setDocumentUploadFiles(doc)
+        setDocumentUploadMethod("past")
+        setModalScreen("publish")
     }
 
     // ====================================================================
@@ -140,10 +149,10 @@ export default function documents() {
         return (
 
             <div className="uploader-past_documents">
-                <h3>Documents récents</h3>
+                <h3>Documents récents d'autres groupes</h3>
                 {
                     not_this_group_docs.map(doc =>
-                        <button className="uploader-past_document" key={doc.id} onClick={() => { handleUploadFromPastDocument(doc) }}>
+                        <button className="uploader-past_document" key={doc.id} onClick={() => { handleAddDocumentFromPastDoc(doc) }}>
                             <h4>{doc.data.original_name}</h4>
                             <span>Ajouté le</span>
                             <i>{new Date(doc.data.created_at).toLocaleDateString()}</i>
@@ -353,10 +362,30 @@ export default function documents() {
                         <PastDocuments/> : null }
                         <div className="main-modal_buttons">
                             <button className="cta gray" onClick={() => {setModalVisible(false); setDocumentUploadFiles([])}}>Annuler</button>
-                            <button className="cta blue" onClick={() => handleUploadDocuments()}>Ajouter</button>
+                            <button className="cta blue" onClick={() => handleUploadDocuments()}>Suivant</button>
                         </div>
                         <ErrorAlert visible={validateEmpty(documentUploadErrors)} content={documentUploadErrors} onClick={() => setDocumentUploadErrors("")} />
                     </>
+                
+                : modalScreen === "publish" ?
+                    <div className="documents_upload-infos">
+
+                        {/* <div className="input-container">
+                            <input value={documentUploadURL} onChange={e => setDocumentUploadURL(e.target.value)} type="text" placeholder=" " className="input-container_input" />
+                            <span className="input-container_label">Nom du document</span>
+                        </div>   */}
+                        <div className="row">
+                            {/* <div className="input-container">
+                                <input value={documentUploadURL} onChange={e => setDocumentUploadURL(e.target.value)} type="text" placeholder=" " className="input-container_input" />
+                                <span className="input-container_label">Ou saisissez une url</span>
+                            </div>
+                            <div className="input-container">
+                                <span className="input-container_label-chooser">Heure</span>
+                                <input value={courseTimeSlotHourFrom} onChange={e => setcourseTimeSlotHourFrom(e.target.value)} type="time" className="input-container_time" />
+                            </div>      */}
+                        </div>
+
+                    </div>
                 
                 : modalScreen === "delete" ?
                     <div className="main-modal_buttons">
