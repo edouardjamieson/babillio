@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import { HiOutlineCalendar } from 'react-icons/hi'
 
-export default function Input({ type, value, onChange, placeholder }) {
+export default function Input({ type, value, onChange, placeholder, selectValues }) {
 
     const [calendarToggle, setCalendarToggle] = useState(false)
     const calendarRef = useRef()
@@ -57,6 +57,24 @@ export default function Input({ type, value, onChange, placeholder }) {
                         <HiOutlineCalendar />
                         <span>Choisir</span>
                     </button>
+                </>
+                :
+                type === "select" ?
+                <>
+                    <span className="input-container_label-chooser">{ placeholder }</span>
+                    <select className="input-container_chooser" value={value} onChange={e => onChange(e.target.value)}>
+                        {
+                            selectValues.map(select =>
+                                <option key={select.value} value={select.value}>{select.name}</option>
+                            )
+                        }
+                    </select>
+                </>
+                :
+                type === "time" ?
+                <>
+                    <span className="input-container_label-chooser">{ placeholder }</span>
+                    <input value={value} onChange={e => onChange(e.target.value)} type="time" className="input-container_time" />
                 </>
                 :null
             }

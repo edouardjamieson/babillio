@@ -24,7 +24,7 @@ export default function Layout({ children, pageTitle, navigationVisible, current
                 getUserByID(user.uid)
                 .then(u => {
                     setCurrentUser(u)
-                    onGetUserInfos ? onGetUserInfos(u) : null
+                    onGetUserInfos ? onGetUserInfos({id:u.id, data:u.data()}) : null
                     
                     if(requiresCourse === true) {
                         getCurrentCourse(u.id)

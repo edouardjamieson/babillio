@@ -664,8 +664,8 @@ h2 {
   align-items: center;
 }
 .main-header_logo-container .main-header_logo {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: block;
   background-image: url('../public/images/logo_blue.png');
   background-size: contain;
@@ -1121,7 +1121,7 @@ h2 {
 #course-creator .error-container {
   bottom: 2rem;
 }
-.course-creator_container {
+.content-creator_container {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -1130,16 +1130,16 @@ h2 {
   margin: auto;
   padding: 0 10%;
 }
-.course-creator {
+.content-creator {
   margin-top: 2rem;
 }
-.course-creator_icon {
+.content-creator_icon {
   width: 100%;
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
 }
-.course-creator_icon .course-creator_icon-picker {
+.content-creator_icon .content-creator_icon-picker {
   width: 4rem;
   height: 4rem;
   background-color: var(--color-lightgray);
@@ -1148,31 +1148,31 @@ h2 {
   cursor: pointer;
   font-size: 2.5rem;
 }
-.course-creator_icon.disabled {
+.content-creator_icon.disabled {
   opacity: 0.5;
   pointer-events: none;
 }
-.course-creator_icon div {
+.content-creator_icon div {
   display: flex;
   flex-direction: column;
   margin-left: 1rem;
 }
-.course-creator_icon strong {
+.content-creator_icon strong {
   font-size: 1.2rem;
   font-weight: var(--fw-bold);
   color: var(--color-darkgray);
 }
-.course-creator_icon span {
+.content-creator_icon span {
   font-size: 0.8rem;
   font-weight: var(--fw-regular);
   color: var(--color-gray);
 }
-.course-creator_icons {
+.content-creator_icons {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
-.course-creator_icons .course-creator_icon-set {
+.content-creator_icons .content-creator_icon-set {
   background-color: transparent;
   opacity: 0.8;
   border: none;
@@ -1181,31 +1181,31 @@ h2 {
   margin-bottom: 0.5rem;
   cursor: pointer;
 }
-.course-creator_icons .course-creator_icon-set:hover {
+.content-creator_icons .content-creator_icon-set:hover {
   opacity: 1;
 }
-.course-creator_infos > .input-label {
+.content-creator_infos > .input-label {
   margin-top: 1rem;
   display: flex;
 }
-.course-creator_infos .inputs {
+.content-creator_infos .inputs {
   display: flex;
   justify-content: space-between;
 }
-.course-creator_dates {
+.content-creator_dates {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 1rem;
 }
-.course-creator_dates .input-label {
+.content-creator_dates .input-label {
   width: 49%;
 }
-.course-creator_dates .input-container {
+.content-creator_dates .input-container {
   width: 49%;
 }
-.course-creator_date-button {
+.content-creator_date-button {
   border: none;
   background-color: var(--color-lightgray);
   cursor: pointer;
@@ -1217,37 +1217,37 @@ h2 {
   justify-content: center;
   border-radius: 15px;
 }
-.course-creator_date-button i {
+.content-creator_date-button i {
   color: var(--color-primary);
   font-size: 1.5rem;
   position: absolute;
   left: 1rem;
 }
-.course-creator_date-button span {
+.content-creator_date-button span {
   font-weight: var(--fw-bold);
   color: var(--color-gray);
 }
-.course-creator_buttons {
+.content-creator_buttons {
   margin-top: 2rem;
   display: flex;
   align-items: center;
 }
-.course-creator_buttons .gray {
+.content-creator_buttons .gray {
   margin-right: auto;
 }
-.course-creator_schedules {
+.content-creator_schedules {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.course-creator_schedules .input-label {
+.content-creator_schedules .input-label {
   width: 49%;
 }
-.course-creator_schedules .input-container {
+.content-creator_schedules .input-container {
   width: 49%;
   margin-bottom: 1rem;
 }
-.course-creator_schedules .course-creator_schedules-add {
+.content-creator_schedules .content-creator_schedules-add {
   background-color: var(--color-gray);
   border: none;
   border-radius: 10px;
@@ -1256,7 +1256,7 @@ h2 {
   margin: 0.5rem auto;
   cursor: pointer;
 }
-.course-creator_timeslot {
+.content-creator_timeslot {
   width: 100%;
   display: flex;
   align-items: center;
@@ -1267,20 +1267,20 @@ h2 {
   margin-bottom: 0.5rem;
   transition: all ease 0.2s;
 }
-.course-creator_timeslot span {
+.content-creator_timeslot span {
   text-transform: capitalize;
   margin-right: 0.5rem;
 }
-.course-creator_timeslot i {
+.content-creator_timeslot i {
   font-style: normal;
   font-weight: var(--fw-bold);
   font-style: 0.8rem;
 }
-.course-creator_timeslot strong {
+.content-creator_timeslot strong {
   margin-left: auto;
   color: var(--color-primary);
 }
-.course-creator_timeslot:hover {
+.content-creator_timeslot:hover {
   opacity: 0.7;
 }
 .course-selector {

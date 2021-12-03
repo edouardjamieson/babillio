@@ -87,11 +87,11 @@ export default function select() {
                                 </div>
                             </button>
                         )}
-                        <button className="course-selector_add-group" onClick={() => {setNewGroupCourseID(data.course.id); setModalVisible(true)}}>+</button>
+                        <button className="course-selector_add-group" onClick={() => router.push(`/app/create/group?course=${data.course.id}`)}>+</button>
                     </div>
                     :
                     <div style={{marginTop:"1rem"}}>
-                        <button type='button' className='cta white' onClick={() => {setNewGroupCourseID(data.course.id); setModalVisible(true)}}>Créer un groupe</button>
+                        <button type='button' className='cta white' onClick={() => router.push(`/app/create/group?course=${data.course.id}`)}>Créer un groupe</button>
                     </div>
                 }
             </li>
@@ -173,7 +173,7 @@ export default function select() {
                     <div className="no-course">
                         <h1>Vous n’avez pas encore créé de cours!</h1>
                         <p>Créer votre premier cours en appuyant sur le bouton ci-dessous.</p>
-                        <Link href="/app/create">
+                        <Link href="/app/create/course">
                             <a className="cta blue">Créer un cours</a>
                         </Link>
                         <div className="no-course_bg"></div>
@@ -184,7 +184,7 @@ export default function select() {
                         <div className="section-header">
                             <h1>Choisir un cours</h1>
                             <div className="section-header_buttons">
-                                <Link href='/app/create'>
+                                <Link href='/app/create/course'>
                                     <a className="cta gray">Créer un cours</a>
                                 </Link>
                             </div>

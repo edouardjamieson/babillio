@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 
-import { HiOutlineDocumentText, HiOutlineUsers, HiOutlineBeaker, HiOutlineChat, HiOutlineSearch, HiOutlineCurrencyDollar, HiOutlinePencil, HiOutlineCog, HiOutlineLogout } from 'react-icons/hi'
+import { HiOutlineDocumentText, HiOutlineUsers, HiOutlineBeaker, HiOutlineChat, HiOutlineSearch, HiOutlineCurrencyDollar, HiOutlinePencil, HiOutlineCog, HiOutlineLogout, HiOutlineNewspaper } from 'react-icons/hi'
 import { useRouter } from 'next/dist/client/router'
 
 export default function Header({ navigationVisible, currentPage, user, course }) {
@@ -85,7 +85,7 @@ export default function Header({ navigationVisible, currentPage, user, course })
                     <li>
                         <Link href="/app/homework">
                             <a className={currentPage === 'homework' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <HiOutlineBeaker />
+                                <HiOutlineNewspaper />
                                 <span>Travaux</span>
                                 <span className="label">Travaux</span>
                             </a>
