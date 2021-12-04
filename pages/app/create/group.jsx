@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import Input from "../../../components/Input";
 import Layout from "/components/Layout";
 import Loader from "/components/Loader";
-import { validateEmpty, getDayName } from "../../../functions/utils";
+import { validateEmpty, getDayName, generateSmallID } from "../../../functions/utils";
 import ErrorAlert from '/components/ErrorAlert'
+import { createGroup } from "../../../functions/groups.db";
 
 export default function group() {
 
@@ -108,6 +109,33 @@ export default function group() {
 
     const handleCreateGroup = () => {
 
+        if(!validateEmpty(newGroupName)) {
+            setErrors("Vous devez nommer votre nouveau groupe")
+            setStep(0)
+            return
+        }
+
+        //If one of the three inputs is empty we do not add new time
+        if(newGroupTimeSlots.length < 1) {
+            return setErrors("Veuillez définir au moins une plage horaire.")
+        }
+
+        const group = {
+            name: newGroupName,
+            admin_id: userInfos.id,
+            course_id: course_id,
+            created_at: Date.now(),
+            timeslots: newGroupTimeSlots,
+            join_code: `gr${newGroupName}-${generateSmallID()}`,
+            students: [],
+            works: [],
+            files: [],
+        }
+
+        createGroup(group)
+        .then(id => {
+            router.push('/app/select')
+        })
     }
 
 
@@ -127,7 +155,7 @@ export default function group() {
                     {
                         step === 0 ?
                         <>
-                            <span className="input-label">Nom du groupe</span>
+                            <span className="input-label">Nom/numéro du groupe</span>
                             <Input type="text" value={newGroupName} onChange={data => setNewGroupName(data)} placeholder="Exemple: 1015" />
                             <div className="content-creator_buttons">
                                 <button className="cta blue" onClick={() => setStep(1)}>Suivant</button>
@@ -175,13 +203,13 @@ export default function group() {
                                 <Input type="time" value={newGroupTimeSlotHourFrom} onChange={data => setNewGroupTimeSlotHourFrom(data)} placeholder="Heure" />
                                 <Input type="time" value={newGroupTimeSlotHourTo} onChange={data => setNewGroupTimeSlotHourTo(data)} placeholder="Heure" />
 
-                                <button className="content-creator_schedules-add" onClick={() => handleAddMoreTimeSlot()}>Ajouter une autre plage horaire</button>                    
+                                <button className="content-creator_schedules-add" onClick={() => handleAddMoreTimeSlot()}>Ajouter</button>                    
                             </div> 
                             
                             
                             <div className="content-creator_buttons">
                                 <button className="cta gray" onClick={() => setStep(0)}>Précédent</button>
-                                <button className="cta blue" onClick={() => setStep(1)}>Terminé</button>
+                                <button className="cta blue" onClick={() => handleCreateGroup()}>Terminé</button>
                             </div>
                         </>
                         :null

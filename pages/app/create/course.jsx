@@ -132,12 +132,6 @@ export default function course() {
     // ====================================================================
     const handleCreateCourse = () => {
 
-        //If one of the three inputs is empty we do not add new time
-        // handleAddTimeSlot()
-        // if(courseTimeSlots.length < 1) {
-        //     return setErrors("Veuillez définir au moins une plage horaire.")
-        // }
-
         if(courseDates[1].formated <= courseDates[0].formated) {
             return setErrors('La date de fin du cours doit être après celle de début du cours.')
         }
@@ -153,11 +147,13 @@ export default function course() {
                 to: courseDates[1].formated
             },
             created_at: Date.now(),
-            created_by: user.id
+            created_by: user.id,
+            groups: []
         }
 
         addCourse(course)
         .then(() => router.push('/app'))
+        .catch(() => setErrors("Une erreur est survenue, veuillez réessayer."))
         
     }
 

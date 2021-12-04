@@ -359,9 +359,9 @@ h2 {
 }
 .uploader-container {
   width: 100%;
+  margin-bottom: 1rem;
   border: 3px dashed var(--color-primary);
   border-radius: 15px;
-  padding: 1rem;
   cursor: pointer;
 }
 .uploader-container .uploader-container_label {
@@ -372,6 +372,7 @@ h2 {
   color: var(--color-primary);
   cursor: pointer;
   transition: all ease 0.2s;
+  padding: 4rem 0;
 }
 .uploader-container .uploader-container_label:hover {
   color: var(--color-primary-faded);
@@ -1395,7 +1396,7 @@ h2 {
   align-items: center;
   justify-content: space-between;
 }
-.course-selector_item .course-selector_item-group div i {
+.course-selector_item .course-selector_item-group div svg {
   color: var(--color-pale);
   transition: all ease 0.2s;
   font-size: 1.2rem;
@@ -1411,7 +1412,7 @@ h2 {
 }
 .course-selector_item .course-selector_item-group:hover span,
 .course-selector_item .course-selector_item-group:hover h4,
-.course-selector_item .course-selector_item-group:hover i {
+.course-selector_item .course-selector_item-group:hover svg {
   color: var(--color-primary);
 }
 .course-selector_item .course-selector_add-group {

@@ -3,15 +3,12 @@ import Link from "next/link";
 import Loader from '/components/Loader'
 
 import { useEffect, useState } from "react";
-import { addGroupToCourse, getCourseInfos, setCurrentGroup } from "/functions/course.db";
-import { getAuth, getLoggedUser, getUserByID } from "/functions/user.db";
-import { auth } from "/functions/firebase";
-import Modal from "/components/Modal";
+import { getCourseInfos } from "/functions/course.db";
+import { setCurrentGroup } from "../../functions/groups.db";
 import { validateEmpty } from "/functions/utils";
 import ErrorAlert from "/components/ErrorAlert";
 import { useRouter } from "next/dist/client/router";
-import { generateSmallID } from "../../functions/utils";
-import { getGroupsInfos } from "../../functions/course.db";
+import { HiOutlinePlusSm, HiOutlineUsers } from "react-icons/hi";
 
 export default function select() {
 
@@ -20,50 +17,74 @@ export default function select() {
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState("")
 
-    const [user, setUser] = useState(null)
+    const [userInfos, setUserInfos] = useState(null)
     const [userCourses, setUserCourses] = useState(null)
 
-    const [modalVisible, setModalVisible] = useState(false)
 
-    const [newGroupName, setNewGroupName] = useState("")
-    const [newGroupCourseID, setNewGroupCourseID] = useState("")
-
-
-
+    /***
+     *                                              
+     *     ###### ###### ###### ######  ####  ##### 
+     *     #      #      #      #      #    #   #   
+     *     #####  #####  #####  #####  #        #   
+     *     #      #      #      #      #        #   
+     *     #      #      #      #      #    #   #   
+     *     ###### #      #      ######  ####    #   
+     *                                              
+     */
     useEffect(() => {
-        auth.onAuthStateChanged(u => {
-            getUserByID(u.uid)
-            .then(value => {setUser(value); return value })
-            .then((user) => {
-                if(user.data().hasOwnProperty('courses') && user.data().courses.length > 0) {
 
-                    if(user.data().type === 'teacher') {
-                        //fetch user's course
-                        const courses = user.data().courses.filter(c => c.role === 'admin').map(c => c.id)
-                        getCourseInfos(courses)
-                        .then(c => setUserCourses(c))
-                        .then(() => setLoading(false))
-                    }
+        if(userInfos) {
 
-                    if(user.data().type === 'student') {
-                        //fetch user's course
-                        const courses = user.data().courses.filter(c => c.role === 'default').map(c => c.id)
-                        getGroupsInfos(courses, auth.currentUser.uid)
-                        .then(g => setUserCourses(g))
-                        .then(() => setLoading(false))
-                    }
+            if(userInfos.data.courses.length > 0) {
 
-                    
-                }else{
-                    setLoading(false)
-                }
-            })
+                //fetch courses
+                const courses = userInfos.data.courses
+                .filter(course => course.role === userInfos.data.type === "teacher" ? "admin" : "default")
+                .map(course => course.id)
 
+                getCourseInfos(courses)
+                .then(courses => setUserCourses(courses))
+                .then(() => setLoading(false))
+
+            }else{
+                setLoading(false)
+            }
+
+        }        
+
+    }, [userInfos])
+
+    /***
+     *                                                                                    
+     *      ####  ###### #      ######  ####  #####     ####  #####   ####  #    # #####  
+     *     #      #      #      #      #    #   #      #    # #    # #    # #    # #    # 
+     *      ####  #####  #      #####  #        #      #      #    # #    # #    # #    # 
+     *          # #      #      #      #        #      #  ### #####  #    # #    # #####  
+     *     #    # #      #      #      #    #   #      #    # #   #  #    # #    # #      
+     *      ####  ###### ###### ######  ####    #       ####  #    #  ####   ####  #      
+     *                                                                                    
+     */
+    const handleSelectGroup = (course_id, group_id) => {
+
+        setCurrentGroup(course_id, group_id)
+        .then(r => {
+            const gobackurl = router.query.gobackto || '/app'
+            router.push(gobackurl)
         })
-        
 
-    }, [])
+    }
 
+
+    /***
+     *                                                                        
+     *      ####   ####  #    # #####   ####  ######    #      #  ####  ##### 
+     *     #    # #    # #    # #    # #      #         #      # #        #   
+     *     #      #    # #    # #    #  ####  #####     #      #  ####    #   
+     *     #      #    # #    # #####       # #         #      #      #   #   
+     *     #    # #    # #    # #   #  #    # #         #      # #    #   #   
+     *      ####   ####   ####  #    #  ####  ######    ###### #  ####    #   
+     *                                                                        
+     */
     const SingleTeacherCourse = ({data}) => {
         console.log(data);
         return (
@@ -82,12 +103,12 @@ export default function select() {
                                 <span>gr.</span>
                                 <h4>{group.data.name}</h4>
                                 <div>
-                                    <i className="icon-users"></i>
+                                    <HiOutlineUsers />
                                     <span>{group.data.students.length}</span>
                                 </div>
                             </button>
                         )}
-                        <button className="course-selector_add-group" onClick={() => router.push(`/app/create/group?course=${data.course.id}`)}>+</button>
+                        <button className="course-selector_add-group" onClick={() => router.push(`/app/create/group?course=${data.course.id}`)}><HiOutlinePlusSm /></button>
                     </div>
                     :
                     <div style={{marginTop:"1rem"}}>
@@ -125,163 +146,76 @@ export default function select() {
         )
     }
 
-    const handleAddGroup = () => {
+    return (
+        <Layout
+            pageTitle="Choisir un cours"
+            navigationVisible={true}
+            onGetUserInfos={data => setUserInfos(data)}
+        >
+            {
+                loading ? <Loader /> :
 
-        if(!validateEmpty(newGroupName)) {
-            setModalVisible(false)
-            return setErrors("Veuillez entrez un nom valide pour le groupe")
-        }
-
-        const data = {
-            name: newGroupName,
-            created_at: Date.now(),
-            admin: user.id,
-            students: [],
-            works:[],
-            course_id: newGroupCourseID,
-            join_code: `gr${newGroupName}-${generateSmallID()}`
-        }
-
-        addGroupToCourse(newGroupCourseID, data)
-        .then(r => {
-            router.reload()
-        })
-
-    }
-
-    const handleSelectGroup = (course_id, group_id) => {
-
-        setCurrentGroup(course_id, group_id)
-        .then(r => {
-            const gobackurl = router.query.gobackto || '/app'
-            router.push(gobackurl)
-        })
-
-    }
-
-    if(loading === true || user === null) return <Loader/>
-
-    if(user.data().type === "teacher") {
-        return (
-            <Layout
-                pageTitle="Choisir un cours"
-                navigationVisible={true}
-            >
                 <section className="course-selector default-page">
-                    { !user.data().hasOwnProperty('courses') || user.data().courses.length === 0 ?
-                    
-                    <div className="no-course">
-                        <h1>Vous n’avez pas encore créé de cours!</h1>
-                        <p>Créer votre premier cours en appuyant sur le bouton ci-dessous.</p>
-                        <Link href="/app/create/course">
-                            <a className="cta blue">Créer un cours</a>
-                        </Link>
-                        <div className="no-course_bg"></div>
-                    </div>
-                    
-                    :
-                    <div className="course-selector_container">
-                        <div className="section-header">
-                            <h1>Choisir un cours</h1>
-                            <div className="section-header_buttons">
-                                <Link href='/app/create/course'>
-                                    <a className="cta gray">Créer un cours</a>
-                                </Link>
+
+                    {
+                        userInfos.data.type === "teacher" ?
+                            userCourses ?
+                            <div className="course-selector_container">
+                                <div className="section-header">
+                                    <h1>Choisir un cours</h1>
+                                    <div className="section-header_buttons">
+                                        <Link href='/app/create/course'>
+                                            <a className="cta gray">Créer un cours</a>
+                                        </Link>
+                                    </div>
+                                </div>
+                                <ul className="course-selector_list">
+                                    {
+                                        userCourses.map(data => <SingleTeacherCourse key={data.course.id} data={data}/>)
+                                    }
+                                </ul>
                             </div>
-                        </div>
-                        <ul className="course-selector_list">
-                            {
-                                userCourses.map(data => <SingleTeacherCourse key={data.course.id} data={data}/>)
-                            }
-                        </ul>
-                    </div>
-                    
-                    }
-    
-    
-    
-                </section>
-
-                <ErrorAlert onClick={() => setErrors("")} visible={validateEmpty(errors)} content={errors}/>
-
-                <Modal
-                    title="Créer un nouveau groupe"
-                    visible={modalVisible}
-                    description="Saisissez le nom ou numéro du nouveau groupe d'élèves"
-                >  
-                    <div className="input-container">
-                        <input value={newGroupName} onChange={e => setNewGroupName(e.target.value)} type="text" placeholder=" " className="input-container_input" />
-                        <span className="input-container_label">Ex : 1100</span>
-                    </div>  
-                    <div className="main-modal_buttons">
-                        <button className="cta gray" onClick={() => setModalVisible(false)}>Annuler</button>
-                        <button className="cta blue" onClick={() => handleAddGroup()}>Ajouter</button>
-                    </div>
-
-                </Modal>
-            </Layout>
-        )
-    }
-
-    if(user.data().type === "student") {
-        return (
-            <Layout
-                pageTitle="Choisir un cours"
-                navigationVisible={true}
-            >
-                <section className="course-selector">
-                    { !user.data().hasOwnProperty('courses') || user.data().courses.length === 0 ?
-                    
-                    <div className="no-course">
-                        <h1>Vous n’avez pas encore rejoint de cours!</h1>
-                        <p>Rejoingnez votre premier cours en appuyant sur le bouton ci-dessous.</p>
-                        <Link href="/app/join">
-                            <a className="cta blue">Rejoindre un cours</a>
-                        </Link>
-                        <div className="no-course_bg"></div>
-                    </div>
-                    
-                    :
-                    <div className="course-selector_container default-page">
-                        <div className="section-header">
-                            <h1>Choisir un cours</h1>
-                            <div className="section-header_buttons">
-                                <Link href='/app/join'>
-                                    <a className="cta gray">Rejoindre un cours</a>
+                            :
+                            <div className="no-course">
+                                <h1>Vous n’avez pas encore créé de cours!</h1>
+                                <p>Créer votre premier cours en appuyant sur le bouton ci-dessous.</p>
+                                <Link href="/app/create/course">
+                                    <a className="cta blue">Créer un cours</a>
                                 </Link>
+                                <div className="no-course_bg"></div>
                             </div>
-                        </div>
-                        <ul className="course-selector_list">
-                            {
-                                userCourses.map(data => <SingleStudentCourse key={data.course.id} data={data}/>)
-                            }
-                        </ul>
-                    </div>
-                    
+                        :
+                            userCourses ?
+                            <div className="course-selector_container default-page">
+                                <div className="section-header">
+                                    <h1>Choisir un cours</h1>
+                                    <div className="section-header_buttons">
+                                        <Link href='/app/join'>
+                                            <a className="cta gray">Rejoindre un cours</a>
+                                        </Link>
+                                    </div>
+                                </div>
+                                <ul className="course-selector_list">
+                                    {
+                                        userCourses.map(data => <SingleStudentCourse key={data.course.id} data={data}/>)
+                                    }
+                                </ul>
+                            </div>
+                            :
+                            <div className="no-course">
+                                <h1>Vous n’avez pas encore rejoint de cours!</h1>
+                                <p>Rejoingnez votre premier cours en appuyant sur le bouton ci-dessous.</p>
+                                <Link href="/app/join">
+                                    <a className="cta blue">Rejoindre un cours</a>
+                                </Link>
+                                <div className="no-course_bg"></div>
+                            </div>
                     }
-    
-    
-    
+
                 </section>
+            }
 
-                <ErrorAlert onClick={() => setErrors("")} visible={validateEmpty(errors)} content={errors}/>
-
-                <Modal
-                    title="Créer un nouveau groupe"
-                    visible={modalVisible}
-                    description="Saisissez le nom ou numéro du nouveau groupe d'élèves"
-                >  
-                    <div className="input-container">
-                        <input value={newGroupName} onChange={e => setNewGroupName(e.target.value)} type="text" placeholder=" " className="input-container_input" />
-                        <span className="input-container_label">Ex : 1100</span>
-                    </div>  
-                    <div className="main-modal_buttons">
-                        <button className="cta gray" onClick={() => setModalVisible(false)}>Annuler</button>
-                        <button className="cta blue" onClick={() => handleAddGroup()}>Ajouter</button>
-                    </div>
-
-                </Modal>
-            </Layout>
-        )
-    }
+            <ErrorAlert onClick={() => setErrors("")} visible={validateEmpty(errors)} content={errors}/>
+        </Layout>
+    )
 }

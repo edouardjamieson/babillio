@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useEffect, useState, useRef } from 'react'
 import gsap from 'gsap'
 
-import { HiOutlineDocumentText, HiOutlineUsers, HiOutlineBeaker, HiOutlineChat, HiOutlineSearch, HiOutlineCurrencyDollar, HiOutlinePencil, HiOutlineCog, HiOutlineLogout, HiOutlineNewspaper } from 'react-icons/hi'
+import { HiOutlineDocumentText, HiOutlineUsers, HiOutlineBeaker, HiOutlineChat, HiOutlineSearch, HiOutlineCurrencyDollar, HiOutlinePencil, HiOutlineCog, HiOutlineLogout, HiOutlineNewspaper, HiOutlineCalendar, HiOutlinePencilAlt } from 'react-icons/hi'
 import { useRouter } from 'next/dist/client/router'
 
 export default function Header({ navigationVisible, currentPage, user, course }) {
@@ -64,11 +64,11 @@ export default function Header({ navigationVisible, currentPage, user, course })
                 { navigationVisible ?
                 <ul>
                     <li>
-                        <Link href="/app/documents">
-                            <a className={currentPage === 'documents' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <HiOutlineDocumentText />
-                                <span>Documents</span>
-                                <span className="label">Documents</span>
+                        <Link href="/app/schedule">
+                            <a className={currentPage === 'schedule' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
+                                <HiOutlineCalendar />
+                                <span>Calendrier</span>
+                                <span className="label">Calendrier</span>
                             </a>
                         </Link>
                     </li>
@@ -83,9 +83,18 @@ export default function Header({ navigationVisible, currentPage, user, course })
                         </Link>
                     </li> : null }
                     <li>
+                        <Link href="/app/documents">
+                            <a className={currentPage === 'documents' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
+                                <HiOutlineDocumentText />
+                                <span>Documents</span>
+                                <span className="label">Documents</span>
+                            </a>
+                        </Link>
+                    </li>
+                    <li>
                         <Link href="/app/homework">
                             <a className={currentPage === 'homework' ? "main-header_navigation-item current-page" : "main-header_navigation-item"}>
-                                <HiOutlineNewspaper />
+                                <HiOutlinePencilAlt />
                                 <span>Travaux</span>
                                 <span className="label">Travaux</span>
                             </a>

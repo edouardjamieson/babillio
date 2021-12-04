@@ -18,11 +18,7 @@ export default function Home() {
   return (
     <Layout pageTitle="Accueil" navigationVisible={true} requiresCourse={true} onGetGroupInfos={(data) => setGroupInfos(data)}>
 
-      <div className="course-overview">
-
-        {
-          groupInfos ? <CurrentGroupBanner groupInfos={groupInfos} /> : null
-        }
+      <div className="course-overview default-page">
         
         <div className="section-header">
             <h1>Vue d'ensemble</h1>

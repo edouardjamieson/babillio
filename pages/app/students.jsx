@@ -24,8 +24,46 @@ export default function students() {
     const [modalDesc, setModalDesc] = useState("")
 
     const [groupInfos, setGroupInfos] = useState(null)
-    const [courseStudents, setCourseStudents] = useState([])
+    const [courseStudents, setCourseStudents] = useState(null)
 
+    /***
+     *                                              
+     *     ###### ###### ###### ######  ####  ##### 
+     *     #      #      #      #      #    #   #   
+     *     #####  #####  #####  #####  #        #   
+     *     #      #      #      #      #        #   
+     *     #      #      #      #      #    #   #   
+     *     ###### #      #      ######  ####    #   
+     *                                              
+     */
+    useEffect(() => {
+
+        if(groupInfos) {
+            const list = groupInfos.group.data.students
+            if(list.length > 0) {
+                getUsers(list)
+                .then(users => {
+                    setCourseStudents(users)
+                    setLoading(false)
+                })
+            }else{
+                setLoading(false)
+            }
+
+        }
+
+    }, [groupInfos])
+
+    /***
+     *                                                                             
+     *      ####  ##### #    # #####  ###### #    # #####    #      #  ####  ##### 
+     *     #        #   #    # #    # #      ##   #   #      #      # #        #   
+     *      ####    #   #    # #    # #####  # #  #   #      #      #  ####    #   
+     *          #   #   #    # #    # #      #  # #   #      #      #      #   #   
+     *     #    #   #   #    # #    # #      #   ##   #      #      # #    #   #   
+     *      ####    #    ####  #####  ###### #    #   #      ###### #  ####    #   
+     *                                                                             
+     */
     const StudentsList = () => {
 
         if(courseStudents.length < 1) return <NoResults/>
@@ -57,23 +95,28 @@ export default function students() {
         
     }
 
-    useEffect(() => {
+    /***
+     *                                                
+     *       ##    ####  ##### #  ####  #    #  ####  
+     *      #  #  #    #   #   # #    # ##   # #      
+     *     #    # #        #   # #    # # #  #  ####  
+     *     ###### #        #   # #    # #  # #      # 
+     *     #    # #    #   #   # #    # #   ## #    # 
+     *     #    #  ####    #   #  ####  #    #  ####  
+     *                                                
+     */
 
-        if(groupInfos) {
-            console.log(groupInfos);
-            const list = groupInfos.group.data.students
-            getUsers(list)
-            .then(users => {
-                setCourseStudents(users)
-                setLoading(false)
-            })
-
-        }
-
-    }, [groupInfos])
+    
 
     return (
-        <Layout pageTitle="Élèves" id="students" currentPage="students" navigationVisible={true} requiresCourse={true} onGetGroupInfos={(data) => setGroupInfos(data)}>
+        <Layout
+            pageTitle="Élèves"
+            id="students"
+            currentPage="students"
+            navigationVisible={true}
+            requiresCourse={true}
+            onGetGroupInfos={(data) => setGroupInfos(data)}
+        >
             
             <div className="students-overview default-page">
                 <div className="section-header">
@@ -89,7 +132,8 @@ export default function students() {
                 </div>
 
                 {
-                    loading ? <LoaderSmall/> : <StudentsList/>
+                    loading ? <LoaderSmall/> :
+                    courseStudents ? <StudentsList/> : <NoResults />
                 }
             </div>
 
@@ -98,6 +142,7 @@ export default function students() {
                 visible={modalVisible}
                 description={modalDesc}
                 id="students-modal"
+                onExit={() => setModalVisible(false)}
             >
 
                 {

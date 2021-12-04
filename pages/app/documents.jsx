@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Layout from "/components/Layout";
-import CurrentGroupBanner from "/components/CurrentGroupBanner";
 import Modal from "/components/Modal";
 import ErrorAlert from "/components/ErrorAlert";
 import SuccessAlert from '/components/SuccessAlert'
 import { generateUniqueID, validateEmpty } from "/functions/utils";
 import { auth, storage } from "/functions/firebase";
-import { addCourseFiles, courseFileAddGroup, courseFileRemoveGroup, deleteFile, getCourseFiles } from "/functions/course.db";
+import { addCourseFiles, courseFileAddGroup, courseFileRemoveGroup, deleteFile } from "/functions/course.db";
+import { getGroupFiles } from "../../functions/files.db";
 import NoResults from "/components/NoResults";
 import LoaderSmall from '/components/LoaderSmall'
 
@@ -306,9 +306,11 @@ export default function documents() {
         if(groupInfos) {
             console.log(groupInfos);
 
-            getCourseFiles(groupInfos.course.id)
+            const documents = groupInfos.group.data.files.map(file => file.id)
+            getGroupFiles(groupInfos.course.id, documents)
             .then(files => {
-                handleProcessCourseFiles(files.map(f => ({ id:f.id, data:f.data() })), 'desc')
+                console.log(files);
+                // handleProcessCourseFiles(files.map(f => ({ id:f.id, data:f.data() })), 'desc')
             })
 
         }
@@ -323,7 +325,7 @@ export default function documents() {
                 <div className="section-header">
                     <h1>Documents</h1>
                     <div className="section-header_buttons">
-                        <button className="cta blue" onClick={() => { setModalScreen('add'); setModalTitle("Ajouter un document"); setModalVisible(true) }}>Ajouter</button>
+                        <button className="cta blue" onClick={() => router.push('/app/create/file')}>Ajouter</button>
                     </div>
                 </div>
                 {
