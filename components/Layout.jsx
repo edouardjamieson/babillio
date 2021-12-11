@@ -35,7 +35,7 @@ export default function Layout({ children, pageTitle, navigationVisible, current
                                 setIsLoading(false)
                             }else{
                                 if(router.route !== '/app/select') {
-                                    router.push(`/app/select?gobackto=${router.asPath}`)
+                                    return router.push(`/app/select?gobackto=${router.asPath}`)
                                 }
                                 setIsLoading(false)
                             }
