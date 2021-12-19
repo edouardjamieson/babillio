@@ -6,7 +6,7 @@ import SuccessAlert from '/components/SuccessAlert'
 import { generateUniqueID, validateEmpty } from "/functions/utils";
 import { auth, storage } from "/functions/firebase";
 import { addCourseFiles, courseFileAddGroup, courseFileRemoveGroup, deleteFile } from "/functions/course.db";
-import { getGroupFiles } from "../../functions/files.db";
+import { getGroupFiles } from "../../functions/content.db";
 import NoResults from "/components/NoResults";
 import LoaderSmall from '/components/LoaderSmall'
 
@@ -323,9 +323,9 @@ export default function documents() {
 
             <div className="documents-overview default-page">
                 <div className="section-header">
-                    <h1>Documents</h1>
+                    <h1>Matériel de classe</h1>
                     <div className="section-header_buttons">
-                        <button className="cta blue" onClick={() => router.push('/app/create/file')}>Ajouter</button>
+                        <button className="cta blue" onClick={() => router.push('/app/create/content')}>Ajouter</button>
                     </div>
                 </div>
                 {

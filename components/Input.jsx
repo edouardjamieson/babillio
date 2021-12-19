@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Calendar from "react-calendar";
-import { HiOutlineCalendar } from 'react-icons/hi'
+import { HiOutlineCalendar, HiOutlineTag } from 'react-icons/hi'
+import { getCategories } from "../functions/content.db";
+import LoaderSmall from "./LoaderSmall";
 
 export default function Input({ type, value, onChange, placeholder, selectValues }) {
 
@@ -51,7 +53,7 @@ export default function Input({ type, value, onChange, placeholder, selectValues
                             onChange(val)
                         }}
                         inputRef={calendarRef}
-                        />
+                    />
                     <span className="input-container_calendar-label">{ placeholder }</span>
                     <button className="input-container_calendar-toggle" onClick={ () => setCalendarToggle(calendarToggle === true ? false:true) }>
                         <HiOutlineCalendar />

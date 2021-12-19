@@ -56,11 +56,11 @@ async function uploadFile(course_id, group_id, user_id, file, onChange) {
             }
     
             //file query
-            const file_query = db.collection('files').add(new_file)
+            const file_query = db.collection('content').add(new_file)
             .then(doc => {
                 //group query
                 const group_query = db.collection('groups').doc(group_id).update({
-                    files: fields.arrayUnion({
+                    content: fields.arrayUnion({
                         id: doc.id,
                         available_at: Date.now()
                     })
@@ -77,4 +77,21 @@ async function uploadFile(course_id, group_id, user_id, file, onChange) {
 
 }
 
-export { getGroupFiles, uploadFile }
+/***
+ *     ######   ######## ########     ######     ###    ######## ########  ######    #######  ########  #### ########  ######  
+ *    ##    ##  ##          ##       ##    ##   ## ##      ##    ##       ##    ##  ##     ## ##     ##  ##  ##       ##    ## 
+ *    ##        ##          ##       ##        ##   ##     ##    ##       ##        ##     ## ##     ##  ##  ##       ##       
+ *    ##   #### ######      ##       ##       ##     ##    ##    ######   ##   #### ##     ## ########   ##  ######    ######  
+ *    ##    ##  ##          ##       ##       #########    ##    ##       ##    ##  ##     ## ##   ##    ##  ##             ## 
+ *    ##    ##  ##          ##       ##    ## ##     ##    ##    ##       ##    ##  ##     ## ##    ##   ##  ##       ##    ## 
+ *     ######   ########    ##        ######  ##     ##    ##    ########  ######    #######  ##     ## #### ########  ######  
+ */
+async function getCategories() {
+    //Retourne seulement les noms et id des catégories
+    const course_id = window.localStorage.getItem('babillio_current_course_id')
+    const categories_query = await db.collection('categories').where('course_id', '==', course_id).get()
+    const categories = categories_query.docs.map(category => ({ id: category.id, name: category.data().name }))
+    return categories
+}
+
+export { getGroupFiles, uploadFile, getCategories }
